@@ -1,4 +1,4 @@
-import Omega as o
+import omega as o
 import numpy as np
 import pandas as pd
 
