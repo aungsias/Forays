@@ -1,6 +1,8 @@
 # Portfolio Optimization Neural Network
 
-## Table of Contents
+---
+
+## Contents
 
 - [Introduction](#introduction)
 - [Problem Statement](#problem-statement)
@@ -11,15 +13,50 @@
 - [Backtesting and Results](#backtesting-and-results)
 - [Conclusion](#conclusion)
 
-## Introduction
+---
 
-This project focuses on leveraging deep learning to optimize portfolio allocations among various financial assets. It provides a systematic way to allocate capital among different investment opportunities to achieve a specific objective, such as maximizing returns or the Sharpe ratio.
+## Introduction
+This project is inspired by the research paper "Deep Learning for Portfolio Optimization" by Zihao Zhang, Stefan Zohren, and Stephen Roberts from the Oxford-Man Institute of Quantitative Finance, University of Oxford. The paper presents an unorthodox approach to portfolio optimization that leverages deep learning models to directly optimize the portfolio Sharpe ratio.
+
+### Key Points in the Study
+- **Circumventing Forecasting Requirements**: Traditional portfolio optimization often relies on forecasting expected returns. This study, however, introduces a framework that eliminates the need for such forecasting. It directly optimizes portfolio weights by updating model parameters, providing a novel means for asset allocation.
+
+- **Trading Exchange-Traded Funds (ETFs)**: Instead of selecting individual assets, the paper focuses on trading ETFs of market indices to form a portfolio. This approach simplifies the asset selection process by way of utilising market indices as proxies for larger universes of asset classes.
+
+- **Performance Evaluation**: The paper extensively compares the proposed method with various algorithms. The results demonstrate superior performance over the testing period, from 2011 to the end of April 2020. This includes periods of financial instability, highlighting the model's robustness.
+
+- **Sensitivity Analysis**: An insightful sensitivity analysis is conducted to understand the relevance of input features, shedding light on the critical factors influencing the model's success.
+
+This project aims to emulate the study's methodology and apply it to a new dataset, exploring the practical implementation of deep learning in the context of portfolio optimization. The motivation behind this emulation is to provide a readily implementable public codebase for usage, scrutiny, and education. The [accompanying reference paper](<./[REFERENCE PAPER] Deep Learning for Portoflio Optimization, University of Oxford.pdf>) provides a comprehensive understanding of the underlying theory and techniques.
+
+### Disclaimer
+Please note that while this project seeks to faithfully emulate the methodology described in the accompanying reference paper, certain complexities and nuances may have been simplified or omitted for the sake of accessibility and clarity. This implementation should be seen as an educational resource and a starting point for further exploration rather than a complete replication of the original study's full sophistication. Users are encouraged to refer to the original paper for a comprehensive understanding of the underlying theory and techniques.
+
+---
 
 ## Problem Statement
 
-The challenge is to predict optimal weights for assets in a portfolio based on historical data. The goal is to maximize the portfolio's Sharpe ratio, subject to constraints such as weights summing to one.
+Predict optimal weights for assets in a portfolio given historical price and daily return data so as to maximize the portfolio's Sharpe Ratio.
 
-## Dataset
+---
+
+## Implementation
+
+First we need the following libraries and modules
+
+```
+import pandas as pd
+import numpy as np
+import yfinance as yf
+import torch
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+from trade_metrics.metrics import Metrics
+from torch.nn import LSTM, Linear, Module, Softmax
+from scipy.optimize import minimize
+from tqdm.auto import tqdm
+```
 
 The dataset consists of historical price data for specified indices, including 'VTI', 'AGG', 'DBC', '^VIX'. The data is retrieved from Yahoo Finance and transformed into logarithmic returns and combined with price information to form the feature set.
 
