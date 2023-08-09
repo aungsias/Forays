@@ -44,7 +44,18 @@ Predict optimal weights for assets in a portfolio given historical price and dai
 
 ### Data
 
-I use the same 
+I use the same four indices to evaluate the LSTM model, but use a slightly different timeframe than did the authors (2006 to 2020 in the paper versus 2007 to 2023 in my replication). The prices for the four indices were retrieved using the `yfinance` library and can be accessed [here](data/VTI-AGG-DBC-VIX.csv) and loaded in with `pandas`.
+
+Logarithmic returns are computed of off the prices and the two dataframes are concatenated as such:
+
+```python
+import pandas as pd
+import numpy as np
+
+prices = pd.read_csv('data/VTI-AGG-DBC-VIX-prices.csv', index_col='Date', parse_dates=True)
+returns = np.log(prices).diff()[1:]
+data = pd.concat([prices.loc[returns.index], returns], axis=1)
+```
 
 ### Model Architecture
 
@@ -85,7 +96,7 @@ The core objective of the model is to maximize the Sharpe ratio, a widely recogn
 $$L_{T} = \frac{E(R_{p,t})}{\sqrt{E(R^2_{p,t}) - (E(R_{p,t}))^2}}$$
 $$E(R_{p,t}) = \frac{1}{T}\sum^T_{t=1}R_{p,t}$$
 
-where $R_{p,t}$ is realized portfolio return over n assets at time $t$:
+where $R_{p,t}$ is realized portfolio return over $n$ assets at time $t$:
 
 ```python
 def objective(outputs, targets):
@@ -103,6 +114,23 @@ Our LSTM model is trained over 100 epochs, where each epoch represents a complet
 The data is divided into training and testing sets, with the first half used for training and the second half for evaluation. During training, the gradients are computed based on the gain, and the optimizer updates the model's weights accordingly:
 
 ```python
+
+seq_len = 50 # 50 day lookback
+
+n_assets = len(returns.columns)
+n_samples = len(data[seq_len:])
+n_features = len(data.columns)
+
+input_data = np.zeros((n_samples, seq_len, n_features)) # (n_samples, seq_len, num_features)
+target = returns.iloc[seq_len:].values[:n_samples] # (n_samples, n_assets)
+
+for i in range(n_samples):
+    input_data[i] = features.iloc[i:(i + seq_len)].values
+
+input_dim = input_data.shape[-1] 
+hidden_dim = 64
+output_dim = target.shape[-1]
+
 model = PortOptNN(input_dim, hidden_dim, output_dim)
 optimizer = torch.optim.Adam(model.parameters(), maximize=True) # maximization of objective function
 
@@ -128,9 +156,60 @@ with torch.no_grad():
     test_outputs = model(test_input_torch)
 ```
 
+Below is how the gains progressed over the 100 epochs:
+
+![Evolution of gains over 100 epochs](img/gains.png)
+
 After training, the model's performance can be evaluated on the testing set.
 
-### Performance
-![Performance of LSTM with 0.1% fees per trade](img/01tc.png)
+### Setting up the Backtest
 
-![Performance of LSTM with 1% fees per trade](img/1tc.png)
+The weights predicted by the model represent the desired allocation of assets in the portfolio for future periods. However, in a real-life trading scenario, decisions must be made based on information available at the current time or earlier. Therefore, to mimic real-life investment behavior in the backtest, the predicted weights must be shifted appropriately. This ensures that the backtest accounts for the necessary lead time to make trading decisions and execute orders, reflecting the inherent delays and information lags that are part of actual trading. The authors thus denote the computation of portfolio returns using the model's outputs as:
+
+$$R_{p,t} = \sum^n_{i=1}w_{i,t-1} \cdot r_{i,t}$$
+
+```python
+weights = pd.DataFrame(
+    test_outputs, 
+    index=returns.index[-len(test_outputs):],
+    columns=returns.columns
+).shift()
+
+backtest_returns = returns.loc[weights.index].copy()
+backtest_returns.loc[backtest_returns.index.min()] = {stock: 0 for stock in indices}
+model_returns = weights.multiply(backtest_returns).sum(axis=1)
+```
+
+---
+
+## The Backtest
+
+The backtest below was conducted after accounting for transaction costs as per:
+
+$$C_{t} = \text{r} \times \sum^n_{i=1}|w_{i,t} - w_{i,t-1}|$$
+
+where $\text{r}$ is the transaction cost rate (I test both 0.1% and 1%), and the term on the right is the absolute difference in weights day to day. Thus the portfolio returns net fees is given by:
+
+$$R_{p,t} - C_{t}$$
+
+With that, the backtest is broken down into the following components
+
+1. Comparison of cumulative log returns (net fees) of the LSTM model versus the four indices VTI, DBC, AGG, and ^VIX.
+2. Evaluation of the annual return, annual volatility, Sharpe Ratio, maximum drawdown of each asset.
+
+### Performance Evaluation
+
+![Cumulative returns](img/cumulative_returns.png)
+
+We can see that even without a walk-forward backtest and even with transaction costs as high as 1%—i.e. the LSTM model was trained on the first half of the dataset and tested on the latter half—it outpeformed all the individual indices.
+
+Below are the respective metrics for each investment within our backtest:
+![Investment metrics](img/metrics.png)
+
+### Adaptability to Market Turmoil
+
+![Allocations during first quarter of 2020](img/allocations.png)
+
+Though our training scheme differed from that of the study, the above shows that the LSTM model was still adapative to market turmoil. During the volatile first quarter of 2020, marked by significant market turmoil, the adaptability of the LSTM model was put to the test. Although the training scheme for this model differed from the referenced study, the results showed similar resilience.
+
+The LSTM model navigated the uncertainty of this period; starting in March 2020, the model began shifting its portfolio allocations primarily towards bonds. This is a notable decision, as bonds are often seen as a safer asset class, particularly during economic downturns. The model thus aimed to limit the portfolio's exposure to the higher volatility present in other investment options. This adaptive behavior underscores the ability the LSTM model to detect and respond to complex market conditions. 
