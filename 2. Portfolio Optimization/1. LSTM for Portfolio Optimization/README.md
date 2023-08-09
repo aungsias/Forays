@@ -40,69 +40,63 @@ Predict optimal weights for assets in a portfolio given historical price and dai
 
 ---
 
-## Methodological Changes and Breakdown
-
-Below is the breakdown of how I've replicated the study. I flag the steps that are different from the study with a ***D***, and those that align with an ***S***.
-
-| Step | Description                                                                                   | Alignment |
-|------|-----------------------------------------------------------------------------------------------|-----------|
-| 1    | Chosen tickers: 'VTI' (Vanguard Total Stock Market ETF), 'AGG' (iShares Core U.S. Aggregate Bond ETF), 'DBC' (Invesco DB Commodity Index Tracking Fund), '^VIX' (CBOE Volatility Index). | S         |
-| 2    | Chosen timeframe: January 1<sup>st</sup>, 2007 to August 7<sup>th</sup>, 2023.               | D         |
-| 3    | Compute log returns.                                                                          | S         |
-| 4    | Concatenate prices and log returns to get an aggregate features dataset.                      | S         |
-| 5    | Defining the architecture of the model (explored later).                                                 | D         |
-| 6    | Set the first half of the features dataset as training period, and the latter half as the testing period. | D         |
-| 7    | Backtest.                                                                                     | S         |
----
-
 ## Implementation
 
-First we need the following libraries and modules. We build our model with [PyTorch](https://pytorch.org/) and use [yfinance](https://pypi.org/project/yfinance/) to retrieve price data. `trade_metrics` is a package that I wrote, which you can find [here](https://github.com/aungsias/Eigen/tree/main/Custom%20Packages/trade_metrics) - it is used to compute the statistics of an asset or portfolio such as Cumulative Log Returns, Sharpe Ratio, and more.
+### Data
+
+I use the same 
+
+### Model Architecture
+
+The model proposed in the paper consists of three main components: the input layer, the neural layer, and the output layer:
+
+- **Input Layer**: The model takes in information from multiple assets $A_{i}$ to form a portfolio. Each asset's features, such as past prices and returns, are concatenated, resulting in an input dimension of $(k, 2 \times n)$, where $k$ is the lookback window and $n$ is the number of assets.
+
+- **Neural Layer**: Various deep learning architectures, including fully connected neural networks (FCN), convolutional neural networks (CNN), and Long Short-Term Memory networks (LSTM), were tested. LSTM demonstrated the best performance for daily financial data due to its ability to filter and summarize information efficiently, resulting in better generalization. FCNs were prone to overfitting, while CNNs sometimes led to underfitting.
+
+- **Output Layer**: To build a long-only portfolio, a softmax activation function is used, ensuring the portfolio weights are positive and sum to one. The output nodes correspond to the number of assets, and the portfolio weights are multiplied with the assets' returns to calculate the realized portfolio returns. The Sharpe ratio is then derived, and gradient ascent is applied to update the model parameters
+
+For simplicity, I've implemented the model as such:
 
 ```python
-import pandas as pd
-import numpy as np
-import yfinance as yf
 import torch
-import seaborn as sns
-import matplotlib.pyplot as plt
+from torch.nn import LSTM, Linear, Module
 
-from trade_metrics.metrics import Metrics
-from torch.nn import LSTM, Linear, Module, Softmax
-from scipy.optimize import minimize
-from tqdm.auto import tqdm
+class PortOptNN(Module):
+    def __init__(self, input_dim, hidden_dim, output_dim):
+        super(PortOptNN, self).__init__()
+        self.lstm = LSTM(input_dim, hidden_dim, batch_first=True)
+        self.fc = Linear(hidden_dim, output_dim, bias=True)
+        self.softmax = Softmax(dim=-1)
+
+    def forward(self, x):
+        lstm_out, _ = self.lstm(x)
+        lstm_out_last = lstm_out[:, -1, :]
+        fc_out = self.fc(lstm_out_last)
+        output = self.softmax(fc_out)
+        return output
 ```
 
-Now we retrieve the data for the four indices and compute log returns, and concatenate the prices and the returns into one `features` dataframe:
+The key difference is the focus on the LSTM architecture. While the paper experimented with various deep learning models (FCNs and CNNs), I specifically test an LSTM as the paper found it to have delivered the best performance in terms of 1) finding weights that maximize the Sharpe Ratio 2) resilience in the face of market turmoil, and 3) providing the highest cumulative return net fees.
+
+### Objective Function
+The core objective of the model is to maximize the Sharpe ratio, a widely recognized measure of risk-adjusted returns. The Sharpe ratio quantifies the return per unit of risk in a portfolio and in effect measures the ability of the portfolio to generate returns considering its underlying risk. The original paper circumvents the forecasting of future returns and maximizes the following function directly for each trading period:
+
+$$L_{T} = \frac{E(R_{p,t})}{\sqrt{E(R^2_{p,t}) - (E(R_{p,t}))^2}}$$
+$$E(R_{p,t}) = \frac{1}{T}\sum^T_{t=1}R_{p,t}$$
+
+where $R_{p,t}$ is realized portfolio return over n assets at time $t$:
 
 ```python
-start = '2007-01-01'
-end = '2023-08-07'
-
-indices = ['VTI', 'AGG', 'DBC', '^VIX']
-prices = yf.download(indices, start=start, end=end)['Close'].dropna(axis=1)
-returns = np.log(prices).diff()[1:]
-
-features = pd.concat([prices.loc[returns.index], returns], axis=1)
-features.head()
-```
-![First 5 rows of `features` dataframe](img/features_head.png)
-
-LSTM models require the input data to take the form $(number of samples, sequence length, number of features)$. Below is a breakdown to illustrate this:
-
-```python
-data  = features.copy()
-seq_len = 50
-
-n_assets = len(returns.columns)
-n_samples = len(data[seq_len:])
-n_features = len(data.columns)
-
-print(f'''- Number of Assets: {n_assets}
-- Length of Data: {len(data)}
-- Length: {seq_len}
-- Number of Samples: {n_samples} ({len(data)} - {seq_len}) 
-- Number of features: {n_features} ({n_assets} assets x {n_features//n_assets} features)'''
-)
+def objective(outputs, targets):
+    portfolio_returns = (outputs * targets).sum(dim=1)
+    mean_portfolio_return = portfolio_returns.mean()
+    volatility = torch.std(portfolio_returns)
+    sharpe_ratio = mean_portfolio_return / volatility
+    return sharpe_ratio
 ```
 
+### Performance
+![Performance of LSTM with 0.1% fees per trade](img/01tc.png)
+
+![Performance of LSTM with 1% fees per trade](img/1tc.png)
