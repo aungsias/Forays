@@ -86,4 +86,4 @@ returns = np.log(prices).diff()[1:]
 features = pd.concat([prices.loc[returns.index], returns], axis=1)
 features.head()
 ```
-![First 5 rows of `features` dataframe](/img/features_head.png)
+![First 5 rows of `features` dataframe](img/features_head.png)
