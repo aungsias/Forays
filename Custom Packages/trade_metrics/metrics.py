@@ -20,7 +20,7 @@ class Metrics:
 
     @staticmethod
     def _cumulative_return(returns):
-        return ((1 + returns).cumprod() - 1)[-1]
+        return returns.cumsum().iloc[-1]
 
     @staticmethod
     def _annual_return(returns):
@@ -33,11 +33,11 @@ class Metrics:
     @staticmethod
     def _sharpe_ratio(returns, risk_free_rate=0.02):
         excess_returns = returns - risk_free_rate / 252
-        return excess_returns.mean() / excess_returns.std() * np.sqrt(252)
+        return (excess_returns.mean() * 252) / (excess_returns.std() * np.sqrt(252))
 
     @staticmethod
     def _max_drawdown(returns):
-        cum_returns = (1 + returns).cumprod()
+        cum_returns = returns.cumsum()
         rolling_max = cum_returns.cummax()
-        drawdown = (cum_returns - rolling_max) / rolling_max
-        return drawdown.min()
+        drawdown = rolling_max - cum_returns
+        return drawdown.max()
