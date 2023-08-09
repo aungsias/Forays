@@ -163,7 +163,7 @@ with torch.no_grad():
 
 Below is how the gains progressed over the 100 epochs:
 
-![Evolution of gains over 100 epochs](img/gains.png)
+<img src="img/gains.png" alt="Evolution of gains over 100 epochs" width="50%" height="50%">
 
 After training, the model's performance can be evaluated on the testing set.
 
@@ -204,16 +204,15 @@ With that, the backtest is broken down into the following components
 
 ### Performance Evaluation
 
-![Cumulative returns](img/cumulative_returns.png)
+<img src="img/cumulative_returns.png" alt="Cumulative returns" width="50%" height="50%">
 
 We can see that even without a walk-forward backtest and even with transaction costs as high as 1%—i.e. the LSTM model was trained on the first half of the dataset and tested on the latter half—it outpeformed all the individual indices.
 
 Below are the respective metrics for each investment within our backtest:
-![Investment metrics](img/metrics.png)
+<img src="img/metrics.png" alt="Investment metrics" width="50%" height="50%">
 
 ### Adaptability to Market Turmoil
-
-![Allocations during first quarter of 2020](img/allocations.png)
+<img src="img/allocations.png" alt="Allocations during first quarter of 2020" width="50%" height="50%">
 
 Though our training scheme differed from that of the study, the above shows that the LSTM model was still adapative to market turmoil. During the volatile first quarter of 2020, marked by significant market turmoil, the adaptability of the LSTM model was put to the test. Although the training scheme for this model differed from the referenced study, the results showed similar resilience.
 
