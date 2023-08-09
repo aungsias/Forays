@@ -96,6 +96,40 @@ def objective(outputs, targets):
     return sharpe_ratio
 ```
 
+### Training Scheme
+
+Our LSTM model is trained over 100 epochs, where each epoch represents a complete pass through the training dataset. The model's predictions (portfolio weights) are passed through an objective function to compute the gain of the daily Sharpe Ratio. The Adam optimizer is used to update the model's parameters in the direction that maximizes this gain (note that by setting `maximize` to `True`, we are using gradient ascent).
+
+The data is divided into training and testing sets, with the first half used for training and the second half for evaluation. During training, the gradients are computed based on the gain, and the optimizer updates the model's weights accordingly:
+
+```python
+model = PortOptNN(input_dim, hidden_dim, output_dim)
+optimizer = torch.optim.Adam(model.parameters(), maximize=True) # maximization of objective function
+
+train_input = input_data[:len(input_data)//2]
+train_input_torch = torch.tensor(train_input, dtype=torch.float32)
+
+train_target = target[:len(target)//2]
+train_target_torch = torch.tensor(train_target, dtype=torch.float32)
+
+test_input = input_data[len(input_data)//2:len(input_data)]
+test_input_torch = torch.tensor(test_input, dtype=torch.float32)
+
+epochs = 100
+for epoch in range(epochs):
+    model.train()
+    optimizer.zero_grad()
+    outputs = model(train_input_torch)
+    gain = objective(outputs, train_target_torch)
+    gain.backward()
+    optimizer.step()
+
+with torch.no_grad():
+    test_outputs = model(test_input_torch)
+```
+
+After training, the model's performance can be evaluated on the testing set.
+
 ### Performance
 ![Performance of LSTM with 0.1% fees per trade](img/01tc.png)
 
