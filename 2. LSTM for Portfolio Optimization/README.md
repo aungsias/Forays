@@ -5,13 +5,18 @@
 ## Contents
 
 - [Introduction](#introduction)
+  - [Key Points in the Study](#key-points-in-the-study)
+  - [Disclaimer](#disclaimer)
 - [Problem Statement](#problem-statement)
-- [Dataset](#dataset)
-- [Model Architecture](#model-architecture)
-- [Training Process](#training-process)
-- [Prediction and Rebalancing](#prediction-and-rebalancing)
-- [Backtesting and Results](#backtesting-and-results)
-- [Conclusion](#conclusion)
+- [Implementation](#implementation)
+  - [Data](#data)
+  - [Model Architecture](#model-architecture)
+  - [Objective Function](#objective-function)
+  - [Training Scheme](#training-scheme)
+  - [Setting up the Backtest](#setting-up-the-backtest)
+- [The Backtest](#the-backtest)
+  - [Performance Evaluation](#performance-evaluation)
+  - [Adaptability to Market Turmoil](#adaptability-to-market-turmoil)
 
 ---
 
