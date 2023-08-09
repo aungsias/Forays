@@ -59,7 +59,7 @@ Below is the breakdown of how I've replicated the study. I flag the steps that a
 
 First we need the following libraries and modules. We build our model with [PyTorch](https://pytorch.org/) and use [yfinance](https://pypi.org/project/yfinance/) to retrieve price data. `trade_metrics` is a package that I wrote, which you can find [here](https://github.com/aungsias/Eigen/tree/main/Custom%20Packages/trade_metrics) - it is used to compute the statistics of an asset or portfolio such as Cumulative Log Returns, Sharpe Ratio, and more.
 
-```
+```python
 import pandas as pd
 import numpy as np
 import yfinance as yf
@@ -75,7 +75,7 @@ from tqdm.auto import tqdm
 
 Now we retrieve the data for the four indices and compute log returns, and concatenate the prices and the returns into one `features` dataframe:
 
-```
+```python
 start = '2007-01-01'
 end = '2023-08-07'
 
@@ -87,3 +87,22 @@ features = pd.concat([prices.loc[returns.index], returns], axis=1)
 features.head()
 ```
 ![First 5 rows of `features` dataframe](img/features_head.png)
+
+LSTM models require the input data to take the form $(number of samples, sequence length, number of features)$. Below is a breakdown to illustrate this:
+
+```python
+data  = features.copy()
+seq_len = 50
+
+n_assets = len(returns.columns)
+n_samples = len(data[seq_len:])
+n_features = len(data.columns)
+
+print(f'''- Number of Assets: {n_assets}
+- Length of Data: {len(data)}
+- Length: {seq_len}
+- Number of Samples: {n_samples} ({len(data)} - {seq_len}) 
+- Number of features: {n_features} ({n_assets} assets x {n_features//n_assets} features)'''
+)
+```
+
