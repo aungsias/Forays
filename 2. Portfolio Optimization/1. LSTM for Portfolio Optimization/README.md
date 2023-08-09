@@ -1,4 +1,4 @@
-# Portfolio Optimization Neural Network
+# Long Short-Term Memory for Portfolio Optimization
 
 ---
 
@@ -40,9 +40,24 @@ Predict optimal weights for assets in a portfolio given historical price and dai
 
 ---
 
+## Methodological Changes and Breakdown
+
+Below is the breakdown of how I've replicated the study. I flag the steps that are different from the study with a ***D***, and those that align with an ***S***.
+
+| Step | Description                                                                                   | Alignment |
+|------|-----------------------------------------------------------------------------------------------|-----------|
+| 1    | Chosen tickers: 'VTI' (Vanguard Total Stock Market ETF), 'AGG' (iShares Core U.S. Aggregate Bond ETF), 'DBC' (Invesco DB Commodity Index Tracking Fund), '^VIX' (CBOE Volatility Index). | S         |
+| 2    | Chosen timeframe: January 1<sup>st</sup>, 2007 to August 7<sup>th</sup>, 2023.               | D         |
+| 3    | Compute log returns.                                                                          | S         |
+| 4    | Concatenate prices and log returns to get an aggregate features dataset.                      | S         |
+| 5    | Defining the architecture of the model (explored later).                                                 | D         |
+| 6    | Set the first half of the features dataset as training period, and the latter half as the testing period. | D         |
+| 7    | Backtest.                                                                                     | S         |
+---
+
 ## Implementation
 
-First we need the following libraries and modules
+First we need the following libraries and modules. We build our model with [PyTorch](https://pytorch.org/) and use [yfinance](https://pypi.org/project/yfinance/) to retrieve price data. `trade_metrics` is a package that I wrote, which you can find [here](https://github.com/aungsias/Eigen/tree/main/Custom%20Packages/trade_metrics) - it is used to compute the statistics of an asset or portfolio such as Cumulative Log Returns, Sharpe Ratio, and more.
 
 ```
 import pandas as pd
@@ -58,42 +73,17 @@ from scipy.optimize import minimize
 from tqdm.auto import tqdm
 ```
 
-The dataset consists of historical price data for specified indices, including 'VTI', 'AGG', 'DBC', '^VIX'. The data is retrieved from Yahoo Finance and transformed into logarithmic returns and combined with price information to form the feature set.
+Now we retrieve the data for the four indices and compute log returns, and concatenate the prices and the returns into one `features` dataframe:
 
-### Features
+```
+start = '2007-01-01'
+end = '2023-08-07'
 
-- **Prices**: Historical closing prices for the specified indices.
-- **Returns**: Logarithmic daily returns calculated from the prices.
+indices = ['VTI', 'AGG', 'DBC', '^VIX']
+prices = yf.download(indices, start=start, end=end)['Close'].dropna(axis=1)
+returns = np.log(prices).diff()[1:]
 
-## Model Architecture
-
-The core of the model consists of the following layers:
-
-1. **LSTM Layer**: Processes time-series data, capturing temporal dependencies within the data. It's configured with a specific number of hidden dimensions, controlling the complexity of the model.
-2. **Linear Layer**: Transforms the LSTM output to the desired output dimension, allowing the model to make predictions in the form of asset weights.
-3. **Softmax Layer**: Applies a softmax activation to ensure that the output represents valid weight allocations, summing to one.
-
-## Training Process
-
-The training process involves the following steps:
-
-1. **Data Preparation**: Sequences of data are prepared with a defined length, creating 3D input arrays for the LSTM.
-2. **Objective Function**: A custom objective function is designed to optimize the Sharpe ratio or other portfolio metrics.
-3. **Training Loop**: The model is trained iteratively using the Adam optimizer, and the progress is monitored through a custom gain metric.
-
-## Prediction and Rebalancing
-
-Once trained, the model is used to predict asset weights for the test data. The weights can be used to execute trades and rebalance the portfolio periodically.
-
-## Backtesting and Results
-
-Backtesting is performed to evaluate the model's performance in a simulated trading environment. Different scenarios, including various transaction costs, can be evaluated.
-
-### Plots
-
-- **Cumulative Log Returns**: Visualization of cumulative log returns over time, compared with benchmark strategies.
-- **Asset Allocation**: Visualization of the model's predicted asset allocations over time.
-
-## Conclusion
-
-This project demonstrates a novel approach to portfolio optimization using deep learning. By incorporating LSTM networks and custom training objectives, it provides a data-driven way to make investment decisions. The methodology can be extended to other financial applications and enhanced with additional features and optimization techniques.
+features = pd.concat([prices.loc[returns.index], returns], axis=1)
+features.head()
+```
+![First 5 rows of `features` dataframe](/img/features_head.png)
