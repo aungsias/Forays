@@ -3,7 +3,7 @@
 Welcome to the Eigen-main repository. As a budding data scientist with a focus on finance, machine learning, and related fields, I've created this space to organize and share my ongoing work, experiments, and learnings.
 
 ## Contents
-### Projects
+### Self
 In this section, you'll find a collection of projects that reflect my explorations in various methodologies and techniques. The projects are diverse and cover different aspects of finance and machine learning. Whether working on original concepts or building upon existing ideas, this section serves as a record of my hands-on experience and growth in the field.
 
 ### Replicated Studies
