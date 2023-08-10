@@ -5,7 +5,7 @@
 ## Contents
 
 - [Introduction](#introduction)
-  - [Key Points in the Study](#key-points-in-the-study)
+  - [Key Points I've Emulated](#key-points-in-the-study)
   - [Disclaimer](#disclaimer)
 - [Problem Statement](#problem-statement)
 - [Implementation](#implementation)
