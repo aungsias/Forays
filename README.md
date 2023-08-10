@@ -17,6 +17,6 @@ As I've progressed in my work, I've found the need to develop custom packages to
 
 ---
 
-The Eigen Project Repository is a personal and evolving collection of my work, explorations, and learnings in finance and machine learning. It's a snapshot of my journey as a data scientist in the making, and I hope it serves as an interesting and valuable resource for others who share similar interests.
+***Eigen*** is a personal and evolving collection of my work, explorations, and learnings in finance and machine learning. It's a snapshot of my journey as a data scientist in the making, and I hope it serves as an interesting and valuable resource for others who share similar interests.
 
 Feel free to explore, and thank you for taking the time to visit my repository.
