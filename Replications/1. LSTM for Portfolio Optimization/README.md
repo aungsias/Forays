@@ -212,6 +212,19 @@ Below are the respective metrics for each investment within our backtest:
 ### Adaptability to Market Turmoil
 <img src="img/allocations.png" alt="Allocations during first quarter of 2020" width="50%" height="50%">
 
-Though our training scheme differed from that of the study, the above shows that the LSTM model was still adapative to market turmoil. During the volatile first quarter of 2020, marked by significant market turmoil, the adaptability of the LSTM model was put to the test. Although the training scheme for this model differed from the referenced study, the results showed similar resilience.
+## Limitations
+The LSTM model presented in this study demonstrates promising results and adaptability to market turmoil. However, several limitations must be acknowledged.
 
-The LSTM model navigated the uncertainty of this period; starting in March 2020, the model began shifting its portfolio allocations primarily towards bonds. This is a notable decision, as bonds are often seen as a safer asset class, particularly during economic downturns. The model thus aimed to limit the portfolio's exposure to the higher volatility present in other investment options. This adaptive behavior underscores the ability the LSTM model to detect and respond to complex market conditions. 
+The **lack of walk-forward validation** is a significant limitation. The model was trained on the first half of the dataset and tested on the latter half without performing a walk-forward backtest. This approach may not fully capture the model's ability to adapt to new, unseen data in a real-world scenario, where market conditions are constantly changing. Implementing a walk-forward validation scheme would allow for a more robust assessment of the model's predictive performance over time.
+
+Another consideration is the **simplified incorporation of transaction costs**, which assumes a fixed percentage for all assets. In reality, transaction costs can vary greatly depending on the asset, broker, market conditions, and other factors. A more sophisticated transaction cost model that takes into account these variations could provide a more accurate representation of the model's performance.
+
+The **need for explicit testing on volatile periods** is another limitation. The adaptability of the LSTM model was evaluated during the volatile first quarter of 2020. However, the model was trained on a large dataset that might have encapsulated prior volatile periods. Without explicit testing on different market regimes, including calm and turbulent periods, it remains uncertain whether the model's adaptability to market turmoil is a generalizable feature or a result of the specific data used for training.
+
+Moreover, the issue of **model interpretability** must be considered. LSTM models are often considered "black boxes" and can be difficult to interpret. While the model has shown adaptability in shifting portfolio allocations, understanding the underlying reasons for these decisions may require further analysis.
+
+The replication might also be prone to **potential overfitting**. Without a dedicated validation set to tune hyperparameters, there might be a risk of overfitting the model to the training data. This could lead to optimistic results that might not be replicable in a live trading environment.
+
+Additionally, the model's decision to shift towards bonds during economic downturns is based on traditional financial wisdom that bonds are safer. This **assumption of asset behavior** might not always be the case, and future market conditions could challenge these assumptions.
+
+Lastly, the **lack of a short-selling mechanism** in the current model only considers long positions in the assets. Incorporating a long-short strategy might provide a more comprehensive view of the potential investment opportunities and risks.
