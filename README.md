@@ -13,7 +13,7 @@ Recreating existing research is a crucial part of my learning process. In the Re
 The Work in Progress section is a dynamic space that houses ongoing experiments, early-stage ideas, and projects under development. Here, I document the process of testing new concepts, iterating on designs, learning from mistakes, and refining my approach. It's a transparent look into the evolving nature of my work and a testament to the continuous learning journey.
 
 ### Custom Packages
-As I've progressed in my work, I've found the need to develop custom packages to support various tasks and streamline processes. In this section, you'll find tools and utilities specifically designed to enhance efficiency and functionality. These custom packages are shared openly and may be of use to others working on similar problems.
+As I've progressed in my work, I've found the need to develop custom packages to support various tasks and streamline processes. Each of them exist as pinned repositories within my profile, which you can find [here](https://github.com/aungsias).
 
 ---
 
