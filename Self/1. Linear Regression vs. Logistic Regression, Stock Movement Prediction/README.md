@@ -14,6 +14,19 @@ The goal here is not to overshadow the advanced models but to understand the bas
 In financial time series data, autocorrelation can complicate modeling and forecasting. This statistical property, where a stock's price today might be closely related to its price in recent days or weeks, undermines the assumption that observations are independent. To address this challenge, our analysis will utilize a shorter timeframe for both training and testing. By limiting the period of analysis and employing logarithmic returns, we aim to diminish the effect of autocorrelation, thus creating a more reliable model. This decision enables a focus on more immediate relationships in the data, without the potential distortion caused by lingering long-term dependencies.
 
 ### Linear and Logistic Regression in Brief
+#### Linear Regression
+Linear regression typically outputs continuous values. However, for our specific purpose of predicting the directional movement of stock prices (up or down), we need to convert these continuous predictions into binary form. We do this by applying a sign function to the continuous predictions. A positive prediction is translated into +1, representing an upward movement, while a negative prediction is translated into -1, representing a downward movement. This conversion allows us to compare the performance of the linear regression model directly with the logistic regression model, which inherently predicts binary outcomes. Linear regression can be generalized as such:
+
+$$y=\beta{X} + \alpha$$
+
+where $y$ is the predicted value, $\beta$ is the coefficient for the independent variable, and $\alpha$ is the y-intercept.
+
+#### Logistic Regression
+Logistic regression is designed to predict binary outcomes and outputs probabilities. In the context of our study, it is used to predict whether the stock price will move up or down. The model classifies the probabilities into two classes, typically using 0.5 as a threshold. A probability greater than 0.5 translates into a prediction of upward movement, while a probability less than or equal to 0.5 translates into a prediction of downward movement. Logistic regression can be generalized as such:
+
+$$p(y=1) = \frac{1}{1 + e^{-(\beta{X} + \alpha)}}$$
+
+where $p(y=1)$ is the probability of that the dependent variable $y$ is 1 (e.g. the stock price goes up), $\beta$ is the coefficient for the independent variable $X$, $\alpha$ is the bias term, and $e$ is the base of the natural logarithm.
 
 ## Methodology
 
