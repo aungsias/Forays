@@ -28,7 +28,7 @@ The methodology of this exploration is broken down as follows:
 4. **Split Data into Training and Testing Sets**: Divide the data into training and testing sets using a time-series split to maintain chronological order. A shorter timeframe is chosen for the analysis to ensure that the model is not confounded by long-term dependencies.
 
 5. **Train Linear and Logistic Regression Models**:
-    - **Linear Regression**: Fit a linear regression model using the training data, predicting the continuous log returns. Note here that the predictions are converted into binary values based on the signage of the predictions (-1 for negative return predictions and +1 for positive return predictions)
+    - **Linear Regression**: Fit a linear regression model using the training data, predicting the continuous log returns. Note here that the predictions—not the input—are converted into binary values based on the signage of the predictions (-1 for negative return predictions and +1 for positive return predictions)
     - **Logistic Regression**: Fit a logistic regression model using the training data, predicting the binary directional movement (up/down).
 
 6. **Make Predictions**: Use the trained models to predict the stock price movement on the testing set.
@@ -70,10 +70,35 @@ data.head()
 ```python
 # Setting the X and y variables.
 X = data[indices]
-y_linear = data[stock].squeeze() # Continuous variables for linear regression predictions.
-y_logistic = np.sign(y_linear) # Binary variables for logistic regression predictions
+y_linear = data[stock].squeeze() # Continuous values for linear regression predictions.
+y_logistic = np.sign(y_linear) # Binary values for logistic regression predictions
 
 # Dividing the processed data into training and testing sets for linear and logistic regression models, ensuring chronological order.
 X_train, X_test, y_train_linear, y_test_linear = train_test_split(X, y_linear, shuffle=False, test_size=.2, random_state=42)
 _, _, y_train_logistic, y_test_logistic = train_test_split(X, y_logistic, shuffle=False, test_size=.2, random_state=42)
 ```
+
+### Model Training
+
+```python
+from sklearn.linear_model import LinearRegression, LogisticRegression
+
+linear_regression = LinearRegression()
+logistic_regression = LogisticRegression(random_state=42) # Set random state for reproducability.
+
+linear_regression.fit(X_train, y_train_linear)
+logistic_regression.fit(X_train, y_train_logistic);
+```
+
+### Predicting Movement and Assessing Accuracy of Predictions
+
+```python
+from sklearn.metrics import accuracy_score
+
+y_pred_lin = np.sign(linear_regression.predict(X_test))
+y_pred_log = logistic_regression.predict(X_test)
+
+accuracy_lin = accuracy_score(np.sign(y_test_linear), y_pred_lin) # Convert predictions into binary values
+accuracy_log = accuracy_score(y_test_logistic, y_pred_log)
+```
+![Accuracy Evaluation](img/acc1.png)
