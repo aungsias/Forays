@@ -117,10 +117,10 @@ logistic_regression.fit(X_train, y_train_logistic);
 ```python
 from sklearn.metrics import accuracy_score
 
-y_pred_lin = np.sign(linear_regression.predict(X_test))
+y_pred_lin = np.sign(linear_regression.predict(X_test)) # Convert predictions into binary values
 y_pred_log = logistic_regression.predict(X_test)
 
-accuracy_lin = accuracy_score(np.sign(y_test_linear), y_pred_lin) # Convert predictions into binary values
+accuracy_lin = accuracy_score(np.sign(y_test_linear), y_pred_lin) 
 accuracy_log = accuracy_score(y_test_logistic, y_pred_log)
 ```
 ![Accuracy Evaluation](img/acc1.png)
