@@ -65,6 +65,8 @@ data.head()
 
 ![First five rows of `data`](img/data.png)
 
+### Feature Selection and Train-Test Split
+
 ```python
 # Setting the X and y variables.
 X = data[indices]
