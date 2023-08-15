@@ -7,6 +7,7 @@
 - [Methodology](#methodology)
 - [Implementation](#implementation)
     - [Price Retrieval and Data Preprocessing](#price-retrieval-and-data-preprocessing)
+    - [Handling Zero Returns and Preparing for Binary Classification](#handling-zero-returns-and-preparing-for-binary-classification)
     - [Feature Selection and Train-Test Split](#feature-selection-and-train-test-split)
     - [Model Training](#model-training)
     - [Predicting Movement and Assessing Accuracy of Predictions](#predicting-movement-and-assessing-accuracy-of-predictions)
@@ -87,6 +88,23 @@ data.head()
 
 ![First five rows of `data`](img/data.png)
 
+### Handling Zero Returns and Preparing for Binary Classification
+In financial time series data, particularly when dealing with returns, it's possible to encounter zero values. These zeros can create complications when trying to predict binary outcomes, such as upward or downward stock price movements, as they introduce a third class that is neither upward nor downward.
+
+To ensure that our logistic regression model has only two classes to predict, we need to address these zero returns in our dataset. To address this, I replaced zeros with the mean of the non-zero values up to that point (i.e., the rolling mean). This technique preserves the overall distribution of the data while eliminating the third class:
+
+```python
+def replace_zeros_with_rolling_mean(series):
+    non_zero_values = series.replace(0, np.nan)
+    rolling_mean = non_zero_values.expanding().mean()
+    for idx, value in series.items():
+        if value == 0:
+            series.at[idx] = rolling_mean.at[idx]
+    return series
+
+data = data.apply(replace_zeros_with_rolling_mean)
+```
+
 ### Feature Selection and Train-Test Split
 
 ```python
@@ -120,7 +138,7 @@ from sklearn.metrics import accuracy_score
 y_pred_lin = np.sign(linear_regression.predict(X_test)) # Convert predictions into binary values
 y_pred_log = logistic_regression.predict(X_test)
 
-accuracy_lin = accuracy_score(np.sign(y_test_linear), y_pred_lin) 
+accuracy_lin = accuracy_score(np.sign(y_test_linear), y_pred_lin)
 accuracy_log = accuracy_score(y_test_logistic, y_pred_log)
 ```
 ![Accuracy Evaluation](img/acc1.png)
