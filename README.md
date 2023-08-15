@@ -1,6 +1,6 @@
 # Eigen
 ## Overview
-Welcome to the Eigen-main repository. As a budding data scientist with a focus on finance, machine learning, and related fields, I've created this space to organize and share my ongoing work, experiments, and learnings. ***Eigen*** **is still in the process of being reorganized, and some content and structure may change.**
+Welcome to the Eigen-main repository. As a budding data scientist with a focus on finance, machine learning, and related fields, I've created this space to organize and share my ongoing work, experiments, and learnings. ***Eigen*** **is continuously updated; content and structure are subject to frequent change.**
 
 ## Contents
 ### Self
