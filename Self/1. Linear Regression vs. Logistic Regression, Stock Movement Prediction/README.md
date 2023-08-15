@@ -1,6 +1,15 @@
 ## Contents
 - [Introduction](#introduction)
     - [Addressing the Elephant in the Room](#addressing-the-elephant-in-the-room)
+    - [Linear and Logistic Regression in Brief](#linear-and-logistic-regression-in-brief)
+        - [Linear Regression](#linear-regression)
+        - [Logistic Regression](#logistic-regression)
+- [Methodology](#methodology)
+- [Implementation](#implementation)
+    - [Price Retrieval and Data Preprocessing](#price-retrieval-and-data-preprocessing)
+    - [Feature Selection and Train-Test Split](#feature-selection-and-train-test-split)
+    - [Model Training](#model-training)
+    - [Predicting Movement and Assessing Accuracy of Predictions](#predicting-movement-and-assessing-accuracy-of-predictions)
 
 ## Introduction
 The prediction of stock price movements remains a central challenge and a point of fascination in various disciplines, from finance and economics to machine learning. Complex methodologies, including deep learning and sophisticated time-series analyses, have advanced the field, often dominating the conversation. However, in the midst of this complexity, there is still a strong case for revisiting simpler models.
