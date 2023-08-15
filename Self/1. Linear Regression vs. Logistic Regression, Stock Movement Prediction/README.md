@@ -1,8 +1,41 @@
+## Contents
+- [Introduction](#introduction)
+    - [Addressing the Elephant in the Room](#addressing-the-elephant-in-the-room)
+- [Methodology](#methodology)
+
 ## Introduction
 The prediction of stock price movements remains a central challenge and a point of fascination in various disciplines, from finance and economics to machine learning. Complex methodologies, including deep learning and sophisticated time-series analyses, have advanced the field, often dominating the conversation. However, in the midst of this complexity, there is still a strong case for revisiting simpler models.
 
-In this study, we turn our attention to linear and logistic regression models to predict the directional movement of Apple Inc.'s stock price. Though these models may seem almost rudimentary compared to the multifaceted techniques now available, they offer valuable insights. Simplicity can provide clarity, interpretability, and a connection to foundational principles that might be lost in more intricate approaches. The goal here is not to overshadow the advanced models but to understand the basic ones, recognize their limitations, and appreciate their role in the broader context of predictive analytics.
+In this study, we turn our attention to linear and logistic regression models to predict the directional movement of Apple Inc.'s stock price. Though these models may seem almost rudimentary compared to the multifaceted techniques now available, they offer valuable insights. Simplicity can provide clarity, interpretability, and a connection to foundational principles that might be lost in more intricate approaches.
 
-## Addressing the Elephant in the Room
+The goal here is not to overshadow the advanced models but to understand the basic ones, recognize their limitations, and appreciate their role in the broader context of predictive analytics. By focusing on linear and logistic regressions, this exploration serves as a reminder that sometimes, the most profound insights can be derived from the basics. It's an academic endeavor that reinforces the importance of foundational learning and the continuous pursuit of understanding, even in a field that is ever-evolving and increasingly complex.
+
+### Addressing the Elephant in the Room
 
 In financial time series data, autocorrelation can complicate modeling and forecasting. This statistical property, where a stock's price today might be closely related to its price in recent days or weeks, undermines the assumption that observations are independent. To address this challenge, our analysis will utilize a shorter timeframe for both training and testing. By limiting the period of analysis and employing logarithmic returns, we aim to diminish the effect of autocorrelation, thus creating a more reliable model. This decision enables a focus on more immediate relationships in the data, without the potential distortion caused by lingering long-term dependencies.
+
+## Methodology
+
+The methodology of this exploration is broken down as follows:
+
+1. **Retrieve Price Data for Apple Inc.**: Retrieve historical closing prices of Apple Inc. and selected market indices (e.g., VTI, DBC, ^VIX, AGG) for a specified time frame.
+
+2. **Preprocess Data**: Calculate the logarithmic daily returns of the price data to reduce the autocorrelation effect and create a more robust model.
+
+3. **Feature Selection**: The four market indices are chosen as proxies for the stock market (VTI), the commodities market (DBC), the bond market (AGG), and expected volatility (^VIX)
+
+4. **Split Data into Training and Testing Sets**: Divide the data into training and testing sets using a time-series split to maintain chronological order. A shorter timeframe is chosen for the analysis to ensure that the model is not confounded by long-term dependencies.
+
+5. **Train Linear and Logistic Regression Models**:
+    - **Linear Regression**: Fit a linear regression model using the training data, predicting the continuous log returns. Note here that the predictions are converted into binary values based on the signage of the predictions (-1 for negative return predictions and +1 for positive return predictions)
+    - **Logistic Regression**: Fit a logistic regression model using the training data, predicting the binary directional movement (up/down).<br><br>
+
+6. **Make Predictions**: Use the trained models to predict the stock price movement on the testing set.
+
+7. **Evaluate Model Accuracy**: Assess the models' accuracy by comparing the predicted directional movement with the actual movement.
+
+8. **Backtesting**: Create a backtesting framework to simulate trading based on the models' predictions. This includes logging transactions and calculating profits for different strategies.
+
+9. **Tune Logistic Regression Model**: Utilize techniques like Grid Search to find the optimal hyperparameters for the logistic regression model, retrain the model, and assess its performance.
+
+10. **Repeat Backtest with Tuned Logistic Regression Model**: Repeat the backtesting procedure using the signals generated by the tuned logistic regression model and compare results.
