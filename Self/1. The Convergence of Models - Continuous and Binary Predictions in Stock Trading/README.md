@@ -26,7 +26,7 @@ August 30<sup>th</sup>, 2023
 ---
 
 ## Introduction
-Navigating the labyrinthine world of stock prediction is often fraught with erratic outcomes and sparse consistency. The prevailing wisdom, backed by a plethora of academic scrutiny, suggests that achieving reliable returns through predictive models remains elusive. This study sidesteps the traditional approach of stock price forecasting, opting instead to focus on daily stock returns—specifically for Microsoft (MSFT) from January 2022 to June 2023. We deploy linear and logistic regression models, scrutinizing their efficacy through metrics like RMSE and precision. Our aim is not to unearth a foolproof strategy for colossal gains but to explore the nuances in model selection and tuning, particularly under the constraints of real-world trading scenarios.
+Predicting stock market behavior is a labyrinth often yielding inconsistent outcomes. This study sidesteps the traditional approach of stock price forecasting, opting instead to focus on daily stock returns—specifically for Microsoft (MSFT) from January 2022 to June 2023. Employing linear and logistic regression models, we assess their performance using metrics like RMSE and precision. However, the study serves a dual purpose: beyond merely identifying robust models, it aims to illuminate the often-overlooked discrepancy between stellar model performance in controlled settings and its actual utility in the volatile, self-correcting financial markets. The goal isn't to unearth a foolproof strategy for outsized gains but to delve into the complexities of model selection, tuning, and their real-world applicability.
 
 ## Methodology
 
