@@ -140,7 +140,7 @@ Despite the Tuned Logistic Regression model showing superior precision in earlie
 
 Interestingly, Tuned Logistic Regression exhibited the least risk, as indicated by its lower annualized volatility of 20.64% compared to Linear Regression's 23.15% and MSFT's 28.23%. However, both models registered negative Sharpe Ratios, implying that the risk was not adequately compensated by the returns.
 
-The most likely culprit for this performance discrepancy is the one-day lag introduced by the .shift() function. While the models might have accurately predicted the stock movement, the lag could have offset the timing, leading to ineffective trading signals.
+The most likely culprit for this performance discrepancy is the one-day lag introduced by the `.shift()` function. While the models might have accurately predicted the stock movement, the lag could have offset the timing, leading to ineffective trading signals.
 
 ### The Limitations of Machine Learning Limitations and Utility in the Stock Market
 The disparate results between model evaluation and backtesting amplify the unique challenges posed by the stock market, a self-correcting ecosystem. Unlike many other domains where machine learning excels, the stock market is not a static environment. It dynamically adjusts to new information, including trading strategies that prove successful, thereby diminishing their future effectiveness. The one-day lag from the `.shift()` method illustrates this point, revealing how even minor temporal misalignments can significantly impair a model's real-world utility.
