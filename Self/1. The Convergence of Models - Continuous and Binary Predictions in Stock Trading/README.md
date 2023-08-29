@@ -140,7 +140,7 @@ Despite Tuned Logistic Regression showing superior precision in prior tests, it 
 
 Although Tuned Logistic Regression displayed lower risk, evident by its annualized volatility of 25.31%, it didn't translate into superior returns. All strategies registered positive Sharpe Ratios, but the higher precision of Tuned Logistic Regression didn't yield a better risk-adjusted return.
 
-The likely cause for this performance gap could be the one-day lag introduced by the .shift() function. While the model might have been more precise, the lag could have misaligned the timing, leading to suboptimal trading signals.
+The likely cause for this performance gap could be the one-day lag introduced by the `.shift()` function. While the model might have been more precise, the lag could have misaligned the timing, leading to suboptimal trading signals.
 
 ### The Limitations of Machine Learning Limitations and Utility in the Stock Market
 The disparate results between model evaluation and backtesting amplify the unique challenges posed by the stock market, a self-correcting ecosystem. Unlike many other domains where machine learning excels, the stock market is not a static environment. It dynamically adjusts to new information, including trading strategies that prove successful, thereby diminishing their future effectiveness. The one-day lag from the `.shift()` method illustrates this point, revealing how even minor temporal misalignments can significantly impair a model's real-world utility.
