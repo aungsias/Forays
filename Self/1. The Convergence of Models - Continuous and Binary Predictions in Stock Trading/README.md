@@ -11,8 +11,9 @@ August 30<sup>th</sup>, 2023
 - [Methodology](#methodology)
     - [A Note on Methodological Nuances](#a-note-on-methodological-nuances)
     - [Breakdown](#breakdown)
-- [Minimizing False Positives: Precision](#minimizing-false-positives-precision)
 - [The Data](#the-data)
+- [Minimizing False Positives: Precision](#minimizing-false-positives-precision)
+- [Assessing MSFT](#assessing-msft)
 
 ---
 
@@ -57,3 +58,13 @@ The dataset scrutinized comprises daily trading variables for MSFT, spanning fro
 In a long-only trading strategy, where the objective is to capitalize on upward market movements, the cost of false positives—incorrectly predicting a stock will rise when it actually declines—can be substantial. Precision emerges as a vital performance metric in this context. It quantifies the model's ability to correctly identify true positives while minimizing false positives, thus serving as a gauge of the model's reliability in maximizing profitability.
 
 By focusing on precision as the evaluative metric, the study aligns the model assessment process with the real-world trading objectives. This is particularly crucial when the model's recommendations directly influence trading decisions, where a high rate of false positives can erode the investment capital rapidly. In sum, the choice of precision as the primary metric offers a targeted approach to model evaluation, one that is particularly aligned with the risk and reward profile of a long-only trading strategy.
+
+## Assessing MSFT
+
+![MSFT, Cumulative Returns](img/MSFT.png)
+
+In assessing Microsoft's (MSFT) financial performance, key metrics reveal a nuanced picture:
+
+![MSFT Metrics](img/MSFT_stats.png)
+
+The cumulative return of 0.012199 indicates modest capital appreciation, while an annual return of 0.065468 offers moderate, yet consistent gains. However, these rewards come at the cost of elevated risk, as reflected in the annual volatility of 0.337916 and a maximum drawdown of -0.344549. The Sharpe ratio of 0.134554 further underscores that these returns are attained by shouldering a considerable amount of risk. It's noteworthy that these statistics come on the heels of a turbulent 2022, marked by record-high inflation rates that led to a broad stock market downturn. While tech stocks, including MSFT, have generally shown signs of recovery this year, the outlook remains uncertain. Given this backdrop, MSFT appears to be an investment suited for those with higher risk tolerance, seeking moderate returns in a market still finding its footing post-crash.
