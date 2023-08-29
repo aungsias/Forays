@@ -134,13 +134,13 @@ The backtesting results present an intriguing contrast to the earlier model eval
 
 <img src="img/backtest_graph.png" alt="Backtest" width="75%" height="75%">
 
-<img src="img/backtest.png" alt="Backtest Results" width="75%" height="75%">
+<img src="img/backtest_performance.png" alt="Backtest Results" width="75%" height="75%">
 
-Despite the Tuned Logistic Regression model showing superior precision in earlier tests, it underperformed in the backtest, yielding a negative cumulative return of -21.56% and a negative annualized return of -59.04%. The Linear Regression model also underperformed, but with slightly less severe negative returns. Meanwhile, simply holding MSFT would have resulted in a robust cumulative return of 46.68% and an annualized return of 100.62%. No transaction costs were considered in the backtesting of the models.
+Despite Tuned Logistic Regression showing superior precision in prior tests, it underperformed in backtesting with a cumulative return of 10.43% and an annualized return of 55.27%. Linear Regression, less precise but more robust, yielded a cumulative return of 16.73% and an annualized return of 68.06%. Simply holding MSFT outperformed both with a cumulative return of 46.68% and an annualized return of 100.62%.
 
-Interestingly, Tuned Logistic Regression exhibited the least risk, as indicated by its lower annualized volatility of 20.64% compared to Linear Regression's 23.15% and MSFT's 28.23%. However, both models registered negative Sharpe Ratios, implying that the risk was not adequately compensated by the returns.
+Although Tuned Logistic Regression displayed lower risk, evident by its annualized volatility of 25.31%, it didn't translate into superior returns. All strategies registered positive Sharpe Ratios, but the higher precision of Tuned Logistic Regression didn't yield a better risk-adjusted return.
 
-The most likely culprit for this performance discrepancy is the one-day lag introduced by the `.shift()` function. While the models might have accurately predicted the stock movement, the lag could have offset the timing, leading to ineffective trading signals.
+The likely cause for this performance gap could be the one-day lag introduced by the .shift() function. While the model might have been more precise, the lag could have misaligned the timing, leading to suboptimal trading signals.
 
 ### The Limitations of Machine Learning Limitations and Utility in the Stock Market
 The disparate results between model evaluation and backtesting amplify the unique challenges posed by the stock market, a self-correcting ecosystem. Unlike many other domains where machine learning excels, the stock market is not a static environment. It dynamically adjusts to new information, including trading strategies that prove successful, thereby diminishing their future effectiveness. The one-day lag from the `.shift()` method illustrates this point, revealing how even minor temporal misalignments can significantly impair a model's real-world utility.
