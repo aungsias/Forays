@@ -134,7 +134,7 @@ The backtesting results present an intriguing contrast to the earlier model eval
 
 <img src="img/backtest_graph.png" alt="Backtest" width="75%" height="75%">
 
-<img src="img/backtest_performance.png" alt="Backtest Results" width="75%" height="75%">
+<img src="img/backtest_metrics.png" alt="Backtest Results" width="75%" height="75%">
 
 Despite Tuned Logistic Regression showing superior precision in prior tests, it underperformed in backtesting with a cumulative return of 10.43% and an annualized return of 55.27%. Linear Regression, less precise but more robust, yielded a cumulative return of 16.73% and an annualized return of 68.06%. Simply holding MSFT outperformed both with a cumulative return of 46.68% and an annualized return of 100.62%.
 
