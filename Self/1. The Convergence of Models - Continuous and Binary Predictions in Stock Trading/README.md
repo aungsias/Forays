@@ -61,10 +61,10 @@ By focusing on precision as the evaluative metric, the study aligns the model as
 
 ## Assessing MSFT
 
-![MSFT, Cumulative Returns](img/MSFT.png)
+<img src="img/MSFT.png" alt="MSFT, Cumulative Returns" width="50%">
 
 In assessing Microsoft's (MSFT) financial performance, key metrics reveal a nuanced picture:
 
-![MSFT Metrics](img/MSFT_stats.png)
+<img src="img/MSFT_stats.png" alt="MSFT Metrics" width="50%">
 
 The cumulative return of 0.012199 indicates modest capital appreciation, while an annual return of 0.065468 offers moderate, yet consistent gains. However, these rewards come at the cost of elevated risk, as reflected in the annual volatility of 0.337916 and a maximum drawdown of -0.344549. The Sharpe ratio of 0.134554 further underscores that these returns are attained by shouldering a considerable amount of risk. It's noteworthy that these statistics come on the heels of a turbulent 2022, marked by record-high inflation rates that led to a broad stock market downturn. While tech stocks, including MSFT, have generally shown signs of recovery this year, the outlook remains uncertain. Given this backdrop, MSFT appears to be an investment suited for those with higher risk tolerance, seeking moderate returns in a market still finding its footing post-crash.
