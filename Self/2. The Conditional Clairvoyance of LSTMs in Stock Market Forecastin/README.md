@@ -40,7 +40,7 @@ The typical LSTM tutorial with respect to the markets leverages the architecture
   <img src="img/pred_v_act.png" width="60%" height="60%">
 </div>
 
-With an $R^2$ of 0.98759 and an MAE: 0.37995, the message is seemingly clear: LSTMs are potent tools capable of predicting financial markets.
+With an $R^2$ of 0.98759 and an MAE of 0.37995, the message is seemingly clear: LSTMs are potent tools capable of predicting financial markets.
 
 ###  Breaking the Illusion
 #### The Sophisticated Moving Average
