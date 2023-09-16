@@ -1,0 +1,17 @@
+# Create a dictionary of regression models designed for working with stock returns
+models = {
+    # ElasticNet combines L1 and L2 regularization, suitable for feature selection and dealing with multicollinearity.
+    'ElasticNet': make_pipeline(StandardScaler(), ElasticNet(alpha=1, l1_ratio=0.5, random_state=42)),
+    
+    # Support Vector Regressor (SVR) with an RBF kernel can capture non-linear relationships in stock returns.
+    'SVR': make_pipeline(StandardScaler(), SVR(kernel='rbf', C=1, gamma='auto')),
+    
+    # RandomForestRegressor is an ensemble method that can capture complex relationships and feature importance.
+    'RandomForest': RandomForestRegressor(n_estimators=100, max_depth=3, random_state=42),
+    
+    # GradientBoostingRegressor is another ensemble method suitable for capturing non-linear relationships and trends.
+    'GradientBoost': GradientBoostingRegressor(n_estimators=100, random_state=42),
+    
+    # XGBoostRegressor is an optimized gradient boosting algorithm known for its speed and performance.
+    'XGBoost': XGBRegressor(n_estimators=100, random_state=42),
+}
