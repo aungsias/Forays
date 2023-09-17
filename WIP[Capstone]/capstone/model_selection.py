@@ -1,5 +1,10 @@
 import numpy as np
 
+from sklearn.model_selection import TimeSeriesSplit
+from typing import Callable, List, Any, Optional
+from pandas import DataFrame, Series
+from sklearn.base import BaseEstimator
+
 def overunder_error(y_true, y_pred, underpred_penalty=1.0, overpred_penalty=1.0, alpha=0.5):
     """
     Calculate the Over-Under Error for portfolio optimization.
@@ -36,3 +41,41 @@ def overunder_error(y_true, y_pred, underpred_penalty=1.0, overpred_penalty=1.0,
     
     # Calculate the mean of the loss
     return np.mean(loss)
+
+def ts_cross_val_score(model: BaseEstimator, 
+                       X_train: DataFrame, 
+                       y_train: Series, 
+                       cv: int, 
+                       scorer: Callable, 
+                       **scorer_kwargs: Optional[Any]) -> List[float]:
+    """
+    Perform time-series cross-validation on a given model using a specific scoring function.
+    
+    Parameters:
+    - model (BaseEstimator): The machine learning model to be trained and validated.
+    - X_train (DataFrame): Feature matrix for the training data.
+    - y_train (Series): Target vector for the training data.
+    - cv (int): Number of splits/folds for cross-validation.
+    - scorer (Callable): Scoring function to evaluate the predictions. Must take two arrays 
+                         'y_true' and 'y_pred' as arguments, along with any additional 
+                         keyword arguments (**scorer_kwargs).
+    - **scorer_kwargs (Optional[Any]): Additional keyword arguments to pass to the scoring function.
+        
+    Returns:
+    - cv_scores (List[float]): List of scores calculated for each fold during cross-validation.
+    """
+    tscv = TimeSeriesSplit(cv)
+    cv_scores = []
+    
+    for idx_train, idx_test in tscv.split(X_train):
+        cvx_train, cvy_train = X_train.iloc[idx_train], y_train.iloc[idx_train]
+        cvx_test, cvy_test = X_train.iloc[idx_test], y_train.iloc[idx_test]
+        
+        model.fit(cvx_train, cvy_train)
+        cvy_hat = model.predict(cvx_test)
+        
+        # Score using the provided scorer function and additional keyword arguments
+        score = scorer(cvy_test, cvy_hat, **scorer_kwargs)
+        cv_scores.append(score)
+    
+    return cv_scores
