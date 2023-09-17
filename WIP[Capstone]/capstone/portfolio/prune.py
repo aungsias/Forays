@@ -1,7 +1,7 @@
 import pandas as pd
 from typing import Tuple, List
 
-def __prune_allocation__(allocation_df, min_weight_th):
+def __prune_allocation__(allocation_df: pd.DataFrame, min_weight_th: pd.DataFrame) -> pd.DataFrame:
     """
     Prunes an allocation DataFrame by removing weights below a given threshold and re-normalizing.
     
@@ -23,7 +23,7 @@ def __prune_allocation__(allocation_df, min_weight_th):
     
     return allocation_df
 
-def prune_allocations(*allocation_dfs, min_weight_th):
+def prune_allocations(*allocation_dfs: pd.DataFrame, min_weight_th: float):
     """
     Prunes multiple allocation DataFrames using a common minimum weight threshold.
     
