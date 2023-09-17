@@ -1,3 +1,6 @@
+import pandas as pd
+from typing import Tuple, List
+
 def __prune_allocation__(allocation_df, min_weight_th):
     """
     Prunes an allocation DataFrame by removing weights below a given threshold and re-normalizing.
@@ -39,3 +42,33 @@ def prune_allocations(*allocation_dfs, min_weight_th):
         trimmed_dfs.append(__prune_allocation__(df, min_weight_th))
         
     return tuple(trimmed_dfs)
+
+def __prune_recommended_portfolio__(portfolio: pd.Series, min_weight_th: float = 0.01) -> pd.Series:
+    """
+    Prunes a portfolio by removing assets with weights below a specified threshold and re-normalizes the remaining weights.
+    
+    Parameters:
+    - portfolio (pd.Series): A pandas Series containing asset weights.
+    - min_weight_th (float): The minimum weight threshold below which assets will be removed. Default is 0.01.
+
+    Returns:
+    - pd.Series: A pruned and re-normalized portfolio.
+    """
+    portfolio = portfolio[portfolio > min_weight_th]
+    return portfolio / portfolio.sum()
+
+def prune_recommended_portfolios(*portfolios: pd.Series, min_weight_th: float = 0.01) -> Tuple[pd.Series]:
+    """
+    Prunes multiple portfolios by removing assets with weights below a specified threshold and re-normalizes the remaining weights.
+    
+    Parameters:
+    - portfolios (pd.Series): One or more pandas Series containing asset weights.
+    - min_weight_th (float): The minimum weight threshold below which assets will be removed. Default is 0.01.
+
+    Returns:
+    - Tuple[pd.Series]: A tuple of pruned and re-normalized portfolios.
+    """
+    pruned = []
+    for portfolio in portfolios:
+        pruned.append(__prune_recommended_portfolio__(portfolio, min_weight_th))
+    return tuple(pruned)
