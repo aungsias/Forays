@@ -1,20 +1,17 @@
-# Comparative Study of Lightweight Language Models for Sentiment Analysis
+# A Comprehensive, Comparitive Study of Sentiment Analysis on Disney
 
 Aung Si<br>
 September 18<sup>th</sup>, 2023
 
+---
+
 ## Introduction 
 
-This study aims to scrutinize the efficacy and computational demands of three pivotal sentiment analysis models: **VADER**, **TextBlob**, and **BERT**, particularly focusing on their adaptability to diverse types of text data.
+In an era where information is as volatile as it is abundant, the financial markets often find themselves at the mercy of public sentiment. News headlines, in particular, serve as a double-edged sword, possessing the power to both propel and plummet stock prices within moments. This study aims to explore this intricate relationship by focusing on Disney, a conglomerate whose diverse portfolio makes it a fascinating subject for this kind of analysis. The overarching questions guiding this study are: Which model is most apt at capturing headline sentiment, and can the sentiment derived from news headlines serve as a reliable indicator for Disney's stock performance?
 
-**VADER (Valence Aware Dictionary and sEntiment Reasoner)** is designed for rapid sentiment analysis of social media and brief textual snippets. Utilizing a lexicon of pre-scored words, VADER computes sentiment by considering word intensity, negations, and contextual factors. While the model is highly interpretable, its rule-based nature may limit its ability to capture linguistic subtleties.
+## Objectives and Methods
+The study unfolds in distinct yet interconnected phases, each with its own set of objectives. Initially, the focus is on determining the most apt sentiment analysis model. A collection of news headlines related to Disney serves as the dataset for this exploratory phase. Four machine learning models—TextBlob, BERT, Vader, and GPT-3—are employed for sentiment labeling. Their output is then qualitatively compared to my own evaluations to ascertain which model best captures the sentiment inherent in the headlines. 
 
-**TextBlob** offers an accessible API for rudimentary natural language processing tasks, including sentiment analysis. Leveraging a Naive Bayes classifier, it assigns polarity and subjectivity metrics to textual data. Although TextBlob employs machine learning, its architecture is less intricate than more recent models, making it efficient but potentially less precise for complex narratives.
+Upon identying the most efficacious model, the study shifts to data segregation based on emotional categories. The aim here is to excavate the lexicon most frequently associated with each sentiment, thereby providing a nuanced understanding of the language patterns that drive public opinion. Concurrently, the events corresponding to these dominant words are analyzed to offer context.
 
-Contrastingly, **BERT (Bidirectional Encoder Representations from Transformers)** is a deep learning behemoth optimized for nuanced language understanding. Employing the Transformer architecture, BERT is pretrained on an expansive corpus and can be fine-tuned for specialized tasks, including sentiment analysis. While its bidirectional capabilities allow for robust contextual interpretation, the computational overhead is significantly higher.
-
-## Data Source and Focus of Analysis
-
-We use the Markets Insider API to gather news articles about Disney for our sentiment analysis. As a long-time Star Wars fan now skeptical of Disney's content direction, this study probes if media sentiments align with my personal views.
-
-The API provides a current and balanced selection of news, which lie at the epicenter of our evaluating the adaptability and precision of VADER, TextBlob, and BERT. The study aims to assess each model's technical capabilities and practical relevance, particularly in a news context that holds personal significance.
+The final objective is to conduct a correlation analysis, linking the refined sentiment data to Disney's stock performance over a defined timeframe. This serves as the empirical test for the overarching hypothesis: Can news headline sentiment act as a reliable predictor for stock market movement?
