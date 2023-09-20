@@ -36,15 +36,15 @@ def overunder_error(y_true, y_pred, underpred_penalty=1.0, overpred_penalty=1.0,
     loss = np.where(
         residual < 0,  # If residual is negative (underprediction)
         underpred_penalty * np.abs(residual)**alpha,  # Apply underprediction penalty
-        overpred_penalty * residual**alpha  # Apply overprediction penalty
+        overpred_penalty * np.abs(residual)**alpha  # Apply overprediction penalty
     )
     
     # Calculate the mean of the loss
     return np.mean(loss)
 
-def ts_cross_val_score(model: BaseEstimator, 
-                       X_train: DataFrame, 
-                       y_train: Series, 
+def ts_cross_val_score_fx(model: BaseEstimator, 
+                       X: DataFrame, 
+                       y: Series, 
                        cv: int, 
                        scorer: Callable, 
                        **scorer_kwargs: Optional[Any]) -> List[float]:
@@ -67,14 +67,57 @@ def ts_cross_val_score(model: BaseEstimator,
     tscv = TimeSeriesSplit(cv)
     cv_scores = []
     
-    for idx_train, idx_test in tscv.split(X_train):
-        cvx_train, cvy_train = X_train.iloc[idx_train], y_train.iloc[idx_train]
-        cvx_test, cvy_test = X_train.iloc[idx_test], y_train.iloc[idx_test]
+    for idx_train, idx_test in tscv.split(X):
+        cvx_train, cvy_train = X.iloc[idx_train], y.iloc[idx_train]
+        cvx_test, cvy_test = X.iloc[idx_test], y.iloc[idx_test]
         
         model.fit(cvx_train, cvy_train)
         cvy_hat = model.predict(cvx_test)
         
-        # Score using the provided scorer function and additional keyword arguments
+        score = scorer(cvy_test, cvy_hat, **scorer_kwargs)
+        cv_scores.append(score)
+    
+    return cv_scores
+
+def ts_cross_val_score_fwd(model: BaseEstimator,
+                    X: DataFrame,
+                    y: Series,
+                    initial_window: int,
+                    scorer: Callable,
+                    scorer_kwargs: Optional[Any]):
+    
+    """
+    Perform walk-forward validation for time-series data.
+
+    Parameters:
+    - model (BaseEstimator): Machine learning model to train and validate.
+    - X (DataFrame): Feature matrix.
+    - y (Series): Target vector.
+    - initial_window (int): Size of the initial training window.
+    - scorer (Callable): Scoring function to evaluate model predictions. 
+                         Must take 'y_true' and 'y_pred' as arguments, 
+                         along with any additional keyword arguments (**scorer_kwargs).
+    - scorer_kwargs (Optional[Any]): Additional keyword arguments to pass to the scoring function.
+
+    Returns:
+    - cv_scores (List[float]): List of scores calculated for each step in walk-forward validation.
+
+    This function conducts time-series cross-validation using a walk-forward validation scheme.
+    Starting from an initial window defined by 'initial_window', the function iteratively
+    expands the training set by one observation and tests the model on the next single
+    observation. The model's performance is evaluated using the scoring function defined by 'scorer'.
+    """
+    
+    n = len(X)
+    cv_scores = []
+
+    for end_idx in range(initial_window, n):
+        cvx_train, cvy_train = X.iloc[:end_idx], y[:end_idx]
+        cvx_test, cvy_test = X.iloc[end_idx:end_idx+1], y[end_idx:end_idx+1]
+
+        model.fit(cvx_train, cvy_train)
+        cvy_hat = model.predict(cvx_test)
+
         score = scorer(cvy_test, cvy_hat, **scorer_kwargs)
         cv_scores.append(score)
     
