@@ -1,7 +1,10 @@
 import numpy as np
 
+from statsmodels.tsa.statespace.sarimax import SARIMAX
+
+from sklearn.pipeline import Pipeline
 from sklearn.model_selection import TimeSeriesSplit
-from typing import Callable, List, Any, Optional
+from typing import Callable, List, Any, Optional, Tuple
 from pandas import DataFrame, Series
 from sklearn.base import BaseEstimator
 
@@ -77,4 +80,52 @@ def ts_cross_val_score(model: BaseEstimator,
         score = scorer(cvy_test, cvy_hat, **scorer_kwargs)
         cv_scores.append(score)
     
+    return cv_scores
+
+def sarimax_exog_cross_val_score(X: DataFrame, 
+                                 y: Series, 
+                                 order: Tuple[int, int, int], 
+                                 seasonal_order: Tuple[int, int, int, int],
+                                 pca: Pipeline,
+                                 cv: int, 
+                                 scorer: Callable,
+                                 **scorer_kwargs: Optional[Any]) -> List[float]:
+    """
+    Perform time-series cross-validation using a SARIMAX model with exogenous variables and PCA.
+
+    Parameters:
+        - X (DataFrame): Feature matrix.
+        - y (Series): Target variable.
+        - order (Tuple[int, int, int]): The (p,d,q) order of the model for the number of AR, differences, and MA parameters.
+        - seasonal_order (Tuple[int, int, int, int]): The (P,D,Q,S) order of the seasonal component.
+        - pca (Pipeline): PCA pipeline for dimensionality reduction.
+        - cv (int): Number of folds in TimeSeriesSplit.
+        - scorer (Callable): Custom scoring function.
+        - **scorer_kwargs (Optional[Any]): Additional keyword arguments for the scoring function.
+
+    Returns:
+        List[float]: List of scores obtained for each fold during cross-validation.
+
+    This function performs time-series cross-validation on a SARIMAX model with exogenous variables,
+    after reducing the dimensions of the exogenous variables using PCA. The function takes the time 
+    series target variable 'y', feature matrix 'X', model orders, PCA model, number of CV folds, and 
+    a scoring function. It returns a list of scores computed by the scoring function for each fold.
+    """
+    
+    tscv = TimeSeriesSplit(n_splits=cv)
+    cv_scores = []
+
+    for train_idx, test_idx in tscv.split(y):
+        cvx_train, cvy_train = X.iloc[train_idx], y[train_idx]
+        cvx_test, cvy_test = X.iloc[test_idx], y[test_idx]
+
+        cvx_train_pca = pca.fit_transform(cvx_train)
+        cvx_test_pca = pca.transform(cvx_test)
+
+        cv_model = SARIMAX(cvy_train.values, exog=cvx_train_pca, order=order, seasonal_order=seasonal_order).fit()
+        cvy_hat = cv_model.predict(start=test_idx[0], end=test_idx[-1], exog=cvx_test_pca)
+
+        score = scorer(cvy_test, cvy_hat, **scorer_kwargs)
+        cv_scores.append(score)
+
     return cv_scores
