@@ -24,6 +24,7 @@ September 9<sup>th</sup>, 2023
     - [Models Used](#models-used)
         - [Regression Models](#regression-models)
         - [Time Series Models](#time-series-models)
+         
 ## Abstract
 In this project, I've engineered an adaptive machine learning algorithm that undergoes biannual recalibration to select the most accurate model for sector-based investment strategies. To counteract the pitfalls of over-forecasting, the algorithm employs a custom loss function that penalizes overpredictions. It comprehensively integrates a diverse range of financial indicators, including equity, debt, commodities, and market volatility. To enhance computational efficiency and model precision, I employed Principal Component Analysis for feature reduction. The model's robustness was substantiated through a 15-year backtest, during which it outperformed the SPY index by an estimated 91.85%. The finalized, vetted model has been encapsulated in a real-time dashboard, effectively translating intricate analytics into actionable market insights.
 
@@ -87,15 +88,15 @@ Sectoral returns offer an aggregated, yet nuanced, view of market trends. By foc
 The machine learning framework in this project comprises an ensemble of diverse models, each with distinct strengths tailored for financial market analysis. The models are preprocessed using Principal Component Analysis (PCA) to capture at least 80% of the variance in the data, and standard scaled for normalization. Below are the models and their configurations:
 
 #### Regression Models
-- **ElasticNet**: Combines L1 and L2 regularization, aiding in feature selection and handling multicollinearity.
+- **Elastic Net**: Combines L1 and L2 regularization, aiding in feature selection and handling multicollinearity.
     - Parameters: `alpha = 1` (strong regularization), `l1_ratio = 0.5` (balanced L1 and L2)
-- **Support Vector Regressor (SVR)**: Uses an RBF kernel to capture non-linear relationships.
+- **Support Vector (SVR)**: Uses an RBF kernel to capture non-linear relationships.
     - Parameters: `kernel = 'rbf'`, `c = 1` (moderate regularization), `gamma = 'auto'` (automatic kernal coefficient)
-- **RandomForestRegressor**: An ensemble of decision trees, capturing complex relationships and feature importance.
+- **Random Forest**: An ensemble of decision trees, capturing complex relationships and feature importance.
     - Parameters: `n_estimators = 100`
-- **GradientBoostingRegressor**: Boosting algorithm suitable for capturing non-linear relationships.
+- **Gradient Boosting**: Boosting algorithm suitable for capturing non-linear relationships.
     - Parameters: `n_estimators = 100`
-- **XGBoostRegressor**: Optimized gradient boosting algorithm known for speed and performance
+- **Extreme Gradient Boosting**: Optimized gradient boosting algorithm known for speed and performance
     - Parameters: `n_estimators = 100`
 
 All regression models are configured with `random_state = 42` for reproducibility. 
