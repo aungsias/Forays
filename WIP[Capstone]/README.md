@@ -1,7 +1,10 @@
 # Dynamic Portfolio Optimization with Sector Rotation & Machine Learning
+
 Aung Si<br>
 September 9<sup>th</sup>, 2023
+
 ---
+
 ## Contents
 - [Abstract](#abstract)
 - [Introduction](#introduction)
