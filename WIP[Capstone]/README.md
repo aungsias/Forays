@@ -22,3 +22,25 @@ The initial data pool encompassed all 503 constituents of the S&P 500 (the ticke
 
 Further adjustment involved feature shifting to accommodate a 252-day forecast, equivalent to the number of trading days in a year. Consequently, the dataset's starting point for the model training was shifted to November 20, 2007. This maneuver ensured that the model's predictive variables align accurately with the forecast period, while still maintaining data integrity. This dataset provides a robust 16-year snapshot of market behavior, forming the bedrock for the machine learning framework.
 
+## Feature Engineering
+The feature set is crafted to encapsulate diverse market indicators and sectoral insights. The following breaks the engineering process down:
+
+### Data Sources
+- **S&P 500 Constituents**: 419 stocks with historical prices from February 6, 2006, to the present.
+- **Market Indices**: Four key indices—Bonds, Commodities, Stocks, and Volatility—also spanning the same timeframe.
+### Transformation
+- **Log Returns**: Calculated for both S&P 500 constituents and market indices to normalize the price series and make them stationary.
+- **Sectoral Returns**: An average log return for stocks within each GICS Sector, resulting in a set of sector-based features.
+### Feature Enhancement
+- **Lookback Period**: A 10-day rolling window was used to calculate the Sharpe ratio for each feature, annualized with a factor of 252.
+- **Lagged Features**: Created for each quarter (63 trading days) up to a year, capturing seasonality and longer-term trends.
+### Statistical Tests
+- **ADF Test**: Augmented Dickey-Fuller test confirmed all features to be stationary, a prerequisite for time-series modeling.
+### Dimensionality
+The final dataset comprises 120 features, tested for stationarity. Initially, a heatmap of feature correlations revealed significant concerns regarding multicollinearity:
+
+<img src="img/feature_correlations.png" alt="Feature Correlations" width="30%" height="30%">
+
+However, this issue was adeptly mitigated using Principal Component Analysis (PCA) within the modeling pipelines, details of which will be elaborated upon in the subsequent sections.
+
+The feature set aims to capture the snapshot of current market conditions and includes backward-looking indicators that help the machine learning models understand historical market behavior. Rolling computations were employed to preclude any data leakage from future observations, thereby maintaining the integrity of the predictive models.
