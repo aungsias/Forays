@@ -13,11 +13,11 @@ Financial markets are inherently volatile and self-correcting, subject to extern
 In this project, I've constructed a machine learning framework that operates as a "model of models." Rather than being a singular static model, it encompasses multiple machine learning algorithms. Every six months, each constituent model is retrained and assessed for performance. The best-performing model is then selected for the ensuing period, thereby ensuring that the framework remains attuned to the current market conditions. Each model selects a sector based on the mean predicted returns—the sector with the highest return is chosen. This framework is then backtested over a 15-year period to substantiate the framework's efficacy.
 
 ## Methodology
-1. Data Retrieval
-3. Feature Engineering - Engineered features capture essential market variables: log returns, Sharpe ratios, and lagged features. Each feature is validated for stationarity. PCA mitigates multicollinearity.
-3. Target Engineering - Sectoral returns are the primary targets, calculated as average log returns within each GICS Sector, providing a sector-focused strategy.
-4. "Model of Models" Architecture - Utilizes multiple machine learning models. Biannually, models are retrained and assessed. The top-performing model is chosen via a custom loss function penalizing overpredictions. The sector indicated by this model is the investment focus.
-5. Backtesting - The selected investment strategy is backtested, accounting for transaction costs, over a historical period to validate its efficacy.
+1. **Data Retrieval** - Retrieve prices for stocks and indices via `yfinance`.
+3. **Feature Engineering** - Engineered features capture essential market variables: log returns, Sharpe ratios, and lagged features. Each feature is validated for stationarity. PCA mitigates multicollinearity.
+3. **Target Engineering** - Sectoral returns are the primary targets, calculated as average log returns within each GICS Sector, providing a sector-focused strategy.
+4. **"Model of Models" Architecture** - Utilizes multiple machine learning models. Biannually, models are retrained and assessed. The top-performing model is chosen via a custom loss function penalizing overpredictions. The sector indicated by this model is the investment focus.
+5. **Backtesting** - The selected investment strategy is backtested, accounting for transaction costs, over a historical period to validate its efficacy.
 
 ## Data
 
