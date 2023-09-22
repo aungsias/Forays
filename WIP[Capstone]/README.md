@@ -1,7 +1,26 @@
 # Dynamic Portfolio Optimization with Sector Rotation & Machine Learning
 Aung Si<br>
 September 9<sup>th</sup>, 2023
-
+---
+## Contents
+- [Abstract](#abstract)
+- [Introduction](#introduction)
+- [Methodology](#methodology)
+- [Data](#data)
+- [Feature & Target Engineering](#feature--target-engineering)
+    - [Features](#features)
+        - [Data Sources](#data-sources)
+        - [Feature Transformation and Enhancement](#feature-transformation-and-enhancement)
+        - [Statistical Tests](#statistical-tests)
+        - [Dimensionality](#dimensionality)
+    - [Targets](#targets)
+        - [Sectoral Returns as Targets](#sectoral-returns-as-targets)
+        - [Calculation](#calculation)
+        - [Rationale](#rationale)
+- [Modeling](#modeling)
+    - [Models Used](#models-used)
+        - [Regression Models](#regression-models)
+        - [Time Series Models](#time-series-models)
 ---
 
 ## Abstract
@@ -75,7 +94,7 @@ The machine learning framework in this project comprises an ensemble of diverse 
     - Parameters: `n_estimators = 100`
 - **GradientBoostingRegressor**: Boosting algorithm suitable for capturing non-linear relationships.
     - Parameters: `n_estimators = 100`
-- **XGBoostRegressor**: Optimized gradient boosting algorithm known for speed and perfformance
+- **XGBoostRegressor**: Optimized gradient boosting algorithm known for speed and performance
     - Parameters: `n_estimators = 100`
 
 All regression models are configured with `random_state = 42` for reproducibility. 
