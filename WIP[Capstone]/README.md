@@ -62,3 +62,26 @@ The primary targets for this machine learning framework are the sectoral returns
 #### Rationale
 Sectoral returns offer an aggregated, yet nuanced, view of market trends. By focusing on sectoral returns as targets, the models can capture underlying economic factors affecting specific industries. This facilitates a more informed and targeted investment strategy, compared to using broader market indices and enables a strategy that can adapt to sector-specific trends and conditions.
 
+## Modeling
+### Models Used
+The machine learning framework in this project comprises an ensemble of diverse models, each with distinct strengths tailored for financial market analysis. The models are preprocessed using Principal Component Analysis (PCA) to capture at least 80% of the variance in the data, and standard scaled for normalization. Below are the models and their configurations:
+
+#### Regression Models
+- **ElasticNet**: Combines L1 and L2 regularization, aiding in feature selection and handling multicollinearity.
+    - Parameters: `alpha = 1` (strong regularization), `l1_ratio = 0.5` (balanced L1 and L2)
+- **Support Vector Regressor (SVR)**: Uses an RBF kernel to capture non-linear relationships.
+    - Parameters: `kernel = 'rbf'`, `c = 1` (moderate regularization), `gamma = 'auto'` (automatic kernal coefficient)
+- **RandomForestRegressor**: An ensemble of decision trees, capturing complex relationships and feature importance.
+    - Parameters: `n_estimators = 100`
+- **GradientBoostingRegressor**: Boosting algorithm suitable for capturing non-linear relationships.
+    - Parameters: `n_estimators = 100`
+- **XGBoostRegressor**: Optimized gradient boosting algorithm known for speed and perfformance
+    - Parameters: `n_estimators = 100`
+
+All regression models are configured with `random_state = 42` for reproducibility. 
+
+#### Time Series Models
+- **Naive**: Forecasts future returns based on the past six months of returns. Serves as a benchmark for performance.
+- **ARIMAX**: Time series model that incorporates external variables to forecast future returns.
+
+This ensemble enables the framework to adapt to a variety of market conditions, making it robust and versatile. The biannual recalibration process assesses the performance of these models, selecting the most effective one for the upcoming period.
