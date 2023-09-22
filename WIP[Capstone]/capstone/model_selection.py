@@ -128,3 +128,39 @@ def arimax_cross_val_score(X: DataFrame,
         cv_scores.append(score)
 
     return cv_scores
+
+def naive_cross_val_score(r_hat: Series, 
+                          r_true: Series, 
+                          cv: int, 
+                          scorer: Callable, 
+                          **scorer_kwargs: Optional[Any]) -> List[float]:
+    """
+    Perform time-series cross-validation using a naive forecast model.
+
+    Parameters:
+        - r_hat (Series): Predicted target values.
+        - r_true (Series): Actual target values.
+        - cv (int): Number of splits/folds for time-series cross-validation.
+        - scorer (Callable): Scoring function to evaluate the predictions. 
+                             Must take two arrays 'y_true' and 'y_pred' as arguments,
+                             along with any additional keyword arguments (**scorer_kwargs).
+        - **scorer_kwargs (Optional[Any]): Additional keyword arguments to pass to the scoring function.
+
+    Returns:
+        - cv_scores (List[float]): List of scores calculated for each fold during cross-validation.
+
+    This function performs time-series cross-validation on a naive forecast model. It employs a user-defined
+    scoring function to evaluate the model's predictions. The scoring function can be customized through additional
+    keyword arguments, allowing for flexible evaluation metrics.
+    """
+    
+    tscv = TimeSeriesSplit(n_splits=cv)
+    cv_scores = []
+    
+    for train_idx, test_idx in tscv.split(r_true):
+        _, act = r_true.iloc[train_idx], r_true.iloc[test_idx]
+        _, pred = r_hat.iloc[train_idx], r_hat.iloc[test_idx]
+        
+        cv_scores.append(scorer(act, pred, **scorer_kwargs))
+    
+    return cv_scores
