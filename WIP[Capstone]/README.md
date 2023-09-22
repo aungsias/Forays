@@ -28,9 +28,6 @@ The feature set is crafted to encapsulate diverse market indicators and sectoral
 ### Data Sources
 - **S&P 500 Constituents**: 419 stocks with historical prices from February 6, 2006, to the present.
 - **Market Indices**: Four key indices—Bonds, Commodities, Stocks, and Volatility—also spanning the same timeframe.
-### Transformation
-- **Log Returns**: Calculated for both S&P 500 constituents and market indices to normalize the price series and make them stationary.
-- **Sectoral Returns**: An average log return for stocks within each GICS Sector, resulting in a set of sector-based features.
 ### Feature Enhancement
 - **Lookback Period**: A 10-day rolling window was used to calculate the Sharpe ratio for each feature, annualized with a factor of 252.
 - **Lagged Features**: Created for each quarter (63 trading days) up to a year, capturing seasonality and longer-term trends.
