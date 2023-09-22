@@ -16,3 +16,8 @@ To fortify the framework against the common pitfall of over-forecasting, I've im
 
 To substantiate the framework's efficacy, a 15-year backtest was conducted, during which it consistently outperformed the SPY index. The insights derived from this framework have been operationalized through a real-time dashboard, making the analytics readily actionable.
 
+## Data
+
+The initial data pool encompassed all 503 constituents of the S&P 500, scraped from [Wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies), along with four pivotal market indices: VTI, DBC, AGG, and VIX used as proxies for the prices of stocks, commodities, bonds, and volatility. However, data gaps necessitated a refinement of this dataset and the analytical timeframe. Post-cleaning, the effective timeframe spanned from November 17, 2006, to September 11, 2023.
+
+Further adjustment involved feature shifting to accommodate a 252-day forecast, equivalent to the number of trading days in a year. Consequently, the dataset's starting point for the model training was shifted to November 20, 2007. This maneuver ensured that the model's predictive variables align accurately with the forecast period, while still maintaining data integrity. This dataset provides a robust 16-year snapshot of market behavior, forming the bedrock for the machine learning framework.
