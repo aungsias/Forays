@@ -82,16 +82,15 @@ def ts_cross_val_score(model: BaseEstimator,
     
     return cv_scores
 
-def sarimax_exog_cross_val_score(X: DataFrame, 
+def arimax_cross_val_score(X: DataFrame, 
                                  y: Series, 
-                                 order: Tuple[int, int, int], 
-                                 seasonal_order: Tuple[int, int, int, int],
+                                 order: Tuple[int, int, int],
                                  pca: Pipeline,
                                  cv: int, 
                                  scorer: Callable,
                                  **scorer_kwargs: Optional[Any]) -> List[float]:
     """
-    Perform time-series cross-validation using a SARIMAX model with exogenous variables and PCA.
+    Perform time-series cross-validation using an ARIMA model with exogenous variables and PCA.
 
     Parameters:
         - X (DataFrame): Feature matrix.
@@ -106,7 +105,7 @@ def sarimax_exog_cross_val_score(X: DataFrame,
     Returns:
         List[float]: List of scores obtained for each fold during cross-validation.
 
-    This function performs time-series cross-validation on a SARIMAX model with exogenous variables,
+    This function performs time-series cross-validation on an ARIMA model with exogenous variables,
     after reducing the dimensions of the exogenous variables using PCA. The function takes the time 
     series target variable 'y', feature matrix 'X', model orders, PCA model, number of CV folds, and 
     a scoring function. It returns a list of scores computed by the scoring function for each fold.
@@ -122,7 +121,7 @@ def sarimax_exog_cross_val_score(X: DataFrame,
         cvx_train_pca = pca.fit_transform(cvx_train)
         cvx_test_pca = pca.transform(cvx_test)
 
-        cv_model = SARIMAX(cvy_train.values, exog=cvx_train_pca, order=order, seasonal_order=seasonal_order).fit()
+        cv_model = SARIMAX(cvy_train.values, exog=cvx_train_pca, order=order).fit()
         cvy_hat = cv_model.predict(start=test_idx[0], end=test_idx[-1], exog=cvx_test_pca)
 
         score = scorer(cvy_test, cvy_hat, **scorer_kwargs)
