@@ -39,7 +39,9 @@ The feature set is crafted to encapsulate diverse market indicators and sectoral
 ### Dimensionality
 The final dataset comprises 120 features, tested for stationarity. Initially, a heatmap of feature correlations revealed significant concerns regarding multicollinearity:
 
-<img src="img/feature_correlations.png" alt="Feature Correlations" width="30%" height="30%">
+<p align="center">
+    <img src="img/feature_correlations.png" alt="Feature Correlations" width="30%" height="30%">
+</p>
 
 However, this issue was adeptly mitigated using Principal Component Analysis (PCA) within the modeling pipelines, details of which will be elaborated upon in the subsequent sections.
 
