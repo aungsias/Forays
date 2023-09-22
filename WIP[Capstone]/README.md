@@ -57,4 +57,4 @@ The primary targets for this machine learning framework are the sectoral returns
 - **Average Log Returns**: For each trading day, the average log returns of the stocks in each sector are computed to generate the sectoral returns.
 
 #### Rationale
-Sectoral returns offer an aggregated, yet nuanced, view of market trends. By focusing on sectoral returns as targets, the models can capture underlying economic factors affecting specific industries. This facilitates a more informed and targeted investment strategy, compared to using broader market indices. This framework aims for a more consolidated approach to market prediction, allowing for a strategy that can adapt to sector-specific trends and conditions.
+Sectoral returns offer an aggregated, yet nuanced, view of market trends. By focusing on sectoral returns as targets, the models can capture underlying economic factors affecting specific industries. This facilitates a more informed and targeted investment strategy, compared to using broader market indices and enables a strategy that can adapt to sector-specific trends and conditions.
