@@ -73,7 +73,7 @@ The final dataset comprises 120 features, tested for stationarity. Initially, a 
     <img src="img/feature_correlations.png" alt="Feature Correlations" width="30%" height="30%">
 </p>
 
-However, this issue was mitigated using Principal Component Analysis (PCA) within the modeling pipelines, details of which will be elaborated upon in the subsequent sections.
+However, this issue was mitigated using Principal Component Analysis (PCA) within the modeling pipelines.
 
 The feature set aims to capture the snapshot of current market conditions and includes backward-looking indicators that help the machine learning models understand historical market behavior. Rolling computations were employed to preclude any data leakage from future observations, thereby maintaining the integrity of the predictive models.
 
