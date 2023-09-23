@@ -21,9 +21,15 @@ September 9<sup>th</sup>, 2023
         - [Calculation](#calculation)
         - [Rationale](#rationale)
 - [Modeling](#modeling)
+    - [Asymmetric Loss Function](#asymmetric-loss-function)
     - [Models Used](#models-used)
         - [Regression Models](#regression-models)
         - [Time Series Models](#time-series-models)
+    - [Model of Models](#model-of-models)
+- [Mean Variance Optimization](#mean-variance-optimization)
+    - [Maximum Sharpe Ratio](#maximum-sharpe-ratio)
+    - [Minimum Variance](#minimum-variance)
+    - [Risk Parity](#risk-parity)
          
 ## Abstract
 In this project, I've engineered an adaptive machine learning algorithm that undergoes biannual recalibration to select the most accurate model for sector-based investment strategies. To counteract the pitfalls of over-forecasting, the algorithm employs a custom loss function that penalizes overpredictions. It comprehensively integrates a diverse range of financial indicators, including equity, debt, commodities, and market volatility. To enhance computational efficiency and model precision, I employed Principal Component Analysis for feature reduction. The model's robustness was substantiated through a 15-year backtest, during which it outperformed the SPY index by an estimated 91.85%. The finalized, vetted model has been encapsulated in a real-time dashboard.
@@ -128,3 +134,33 @@ The framework employs a dynamic "Model of Models" architecture that re-trains ea
 </p>
 
 Following this, stock allocations are optimized based on mean-variance optimization methods, specifically the Maximum Sharpe Ratio, Risk Parity, and Minimum Variance optimizations. This cyclical recalibration ensures that the models and subsequently the investor's historical portfolio are updated with prevailing market conditions, optimizing both sector selection (via machine learning) and intra-sector asset allocation (via mean variance optimization).
+
+## Mean-Variance Optimization
+
+After the sector and its constituent stocks are identified through the "Model of Models" framework, the next step is to optimize the portfolio's asset allocation. This is accomplished using mean-variance optimization techniques, which aim to maximize returns while accounting for risk. Three specific optimization methods are therefore employed: Maximum Sharpe Ratio, Minimum Variance, and Risk Parity. Specifically, Maximum Sharpe Ratio optimizes for the best risk-adjusted return, Minimum Variance focuses on reducing portfolio volatility, and Risk Parity aims for equal risk contribution from each asset.
+
+### Maximum Sharpe Ratio
+The Maximum Sharpe Ratio method aims to find the portfolio allocation that maximizes the ratio of expected return to volatility. This is useful for helping investors achieve the highest return for a given level of risk. Mathematically, the Sharpe Ratio $S$ is defined as:
+
+$$S = \frac{E[R_{p}] - R_{f}}{\sigma_{p}}$$
+
+Where $E[R_{p}]$ is the expected portfolio return, $R_{f}$ is the risk-free rate, and $\sigma_{p}$ is the portfolio standard deviation. For simplicity, I've assumed $R_{f} = 0$, a negligible risk-free rate. The optimization problem is:
+
+$$\text{Maximize } S \text{ subject to } \sum^n_{i=1}w_{i}=1$$
+
+### Minimum Variance
+The Minimum Variance method focuses solely on minimizing the portfolio's volatility. This is useful for risk-averse investors, who seek to assume the lowest possible risk profile in their portfolio. The optimization problem can be mathematically formulated as:
+
+$$\text{Minimize } \sigma^2_{p} = w^{T}\Sigma{w} \text{ subject to } \sum^n_{i=1}w_{i} = 1$$
+
+Where $w$ is the vector of the asset wieghts and $\Sigma$ is the covariance matrix of asset returns.
+
+### Risk Parity
+The risk parity method aims to allocate capital such that each asset contributes equally to the portfolio's overall risk. This is useful for investors who seek diversification across various risk sources. The optimization problem is to find weights $w$ that satisfy:
+
+$$\text{Minimize }\sum^n_{i=1}
+\Bigl(\frac{
+    w \times \sigma_{i,p} - \text{Risk Parity Target}
+}{\text{Risk Parity Target}}\Bigl)^2$$
+
+Where $\sigma_{i,p}$ is the marginal contribution of asset $i$ to the portfolio risk, and the Risk Parity Target is $\frac{1}{n}$.
