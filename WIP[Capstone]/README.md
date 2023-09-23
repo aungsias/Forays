@@ -26,7 +26,7 @@ September 9<sup>th</sup>, 2023
         - [Time Series Models](#time-series-models)
          
 ## Abstract
-In this project, I've engineered an adaptive machine learning algorithm that undergoes biannual recalibration to select the most accurate model for sector-based investment strategies. To counteract the pitfalls of over-forecasting, the algorithm employs a custom loss function that penalizes overpredictions. It comprehensively integrates a diverse range of financial indicators, including equity, debt, commodities, and market volatility. To enhance computational efficiency and model precision, I employed Principal Component Analysis for feature reduction. The model's robustness was substantiated through a 15-year backtest, during which it outperformed the SPY index by an estimated 91.85%. The finalized, vetted model has been encapsulated in a real-time dashboard, effectively translating intricate analytics into actionable market insights.
+In this project, I've engineered an adaptive machine learning algorithm that undergoes biannual recalibration to select the most accurate model for sector-based investment strategies. To counteract the pitfalls of over-forecasting, the algorithm employs a custom loss function that penalizes overpredictions. It comprehensively integrates a diverse range of financial indicators, including equity, debt, commodities, and market volatility. To enhance computational efficiency and model precision, I employed Principal Component Analysis for feature reduction. The model's robustness was substantiated through a 15-year backtest, during which it outperformed the SPY index by an estimated 91.85%. The finalized, vetted model has been encapsulated in a real-time dashboard.
 
 ## Introduction
 Financial markets are inherently volatile and self-correcting, subject to externalities including but not limited to equities, debt instruments, commodities, and market sentiment. Traditional investment models often falter in this ever-changing landscape, and even adaptable strategies like sector rotation are usually limited by heuristic-based decision-making.
@@ -91,8 +91,8 @@ The 'Over-Under Error' loss function is specifically tailored for long-only inve
 
 $$\text{loss} = 
 \begin{cases} 
-\text{underpred\_penalty} \times \left| \text{residual} \right|^\alpha & \text{if residual} < 0 \\
-\text{overpred\_penalty} \times \left| \text{residual} \right|^\alpha & \text{otherwise}
+\text{underpred penalty} \times \left| \text{residual} \right|^\alpha & \text{if residual} < 0 \\
+\text{overpred penalty} \times \left| \text{residual} \right|^\alpha & \text{otherwise}
 \end{cases}$$
 
 The model is discouraged from making optimistic forecasts that could lead to overallocation of capital in risky assets.
