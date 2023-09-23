@@ -165,3 +165,30 @@ $$\text{Minimize }\sum^n_{i=1}
 }{\text{Risk Parity Target}}\Bigl)^2$$
 
 Where $\sigma_{i,p}$ is the marginal contribution of asset $i$ to the portfolio risk, and the Risk Parity Target is $\frac{1}{n}$.
+
+## Results
+
+### Model Performance
+Over the course of the biannual recalibrations, different models emerged as the preferred choice for sector selection.
+
+- **Elastic Net**: Emerged as the most frequently selected model, chosen 13 times. It achieved an average Over-Under Error (OUE) of 0.092, indicating the best relative performance across diverse market phases.
+- **ARIMAX**: Followed Elastic Net in preference, being selected 5 times. Despite fewer selections, it maintained a competitive average OUE of 0.101, confirming its efficacy in certain market conditions.
+- **Extreme Gradient Boosting (XGB)**: Chosen on 3 occasions, it posted an average OUE of 0.098. While less frequently chosen, its performance metrics indicate that it's a viable alternative under specific circumstances.
+- **Random Forest**: Also chosen on 3 occasions and achieved an average OUE of 0.093, underscoring its potential utility as part of the ensemble.
+
+### Sector Selection
+
+The biannual model recalibration also provides insights into sector preferences over time:
+
+- Energy: 9 occurrences
+- Information Technology: 5 occurrences
+- Materials: 4 occurrences
+- Consumer Discretionary: 3 occurrences
+- Real Estate: 3 occurrences
+- Health Care: 3 occurrences
+- Financials: 2 occurrences
+- Utilities: 2 occurrences
+- Communication Services: 1 occurrence
+
+#### Sequential Sector Selection
+It's noteworthy that once a sector is chosen, there's a proclivity for it to be selected in the subsequent recalibration cycle. For instance, "Energy" was consecutively chosen multiple times, especially from 2021 through 2023. This could suggest the model's ability to identify and capitalize on enduring trends within particular sectors, enhancing the investment strategy's temporal consistency.
