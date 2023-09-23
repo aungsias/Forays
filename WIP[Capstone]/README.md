@@ -85,7 +85,7 @@ Sectoral returns offer an aggregated, yet nuanced, view of market trends. By foc
 
 ## Modeling
 
-## Asymmetric Loss Function
+### Asymmetric Loss Function
 
 The 'Over-Under Error' loss function is specifically tailored for long-only investment strategies. In such strategies, investors can only buy and hold assets, making portfolios more susceptible to market downturns. Therefore, overpredictions in asset returns can lead to overexposure to certain assets, exacerbating potential losses. To mitigate this, the function is designed to penalize overpredictions more heavily. Mathematically, the loss is defined as:
 
