@@ -191,4 +191,4 @@ The biannual model recalibration also provides insights into sector preferences 
 - Communication Services: 1 occurrence
 
 #### Sequential Sector Selection
-It's noteworthy that once a sector is chosen, there's a proclivity for it to be selected in the subsequent recalibration cycle. For instance, "Energy" was consecutively chosen multiple times, especially from 2021 through 2023. This could suggest the model's ability to identify and capitalize on enduring trends within particular sectors, enhancing the investment strategy's temporal consistency.
+It's noteworthy that once a sector is chosen, there's a proclivity for it to be selected in the subsequent recalibration cycle. For instance, "Energy" was consecutively chosen multiple times, especially from 2021 through 2023. This could suggest the model's ability to identify and capitalize on enduring trends within particular sectors, which may speak to its temporal consistency.
