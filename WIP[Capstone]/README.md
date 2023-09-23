@@ -84,6 +84,19 @@ The primary targets for this machine learning framework are the sectoral returns
 Sectoral returns offer an aggregated, yet nuanced, view of market trends. By focusing on sectoral returns as targets, the models can capture underlying economic factors affecting specific industries. This facilitates a more informed and targeted investment strategy, compared to using broader market indices and enables a strategy that can adapt to sector-specific trends and conditions.
 
 ## Modeling
+
+## Asymmetric Loss Function
+
+The 'Over-Under Error' loss function is specifically tailored for long-only investment strategies. In such strategies, investors can only buy and hold assets, making portfolios more susceptible to market downturns. Therefore, overpredictions in asset returns can lead to overexposure to certain assets, exacerbating potential losses. To mitigate this, the function is designed to penalize overpredictions more heavily. Mathematically, the loss is defined as:
+
+$$\text{loss} = 
+\begin{cases} 
+\text{underpred\_penalty} \times \left| \text{residual} \right|^\alpha & \text{if residual} < 0 \\
+\text{overpred\_penalty} \times \left| \text{residual} \right|^\alpha & \text{otherwise}
+\end{cases}$$
+
+The model is discouraged from making optimistic forecasts that could lead to overallocation of capital in risky assets.
+
 ### Models Used
 The machine learning framework in this project comprises an ensemble of diverse models, each with distinct strengths tailored for financial market analysis. The models are preprocessed using Principal Component Analysis (PCA) to capture at least 80% of the variance in the data, and standard scaled for normalization. Below are the models and their configurations:
 
@@ -106,3 +119,12 @@ All regression models are configured with `random_state = 42` for reproducibilit
 - **ARIMAX**: Time series model that incorporates external variables to forecast future returns.
 
 This ensemble enables the framework to adapt to a variety of market conditions, making it robust and versatile. The biannual recalibration process assesses the performance of these models, selecting the most effective one for the upcoming period.
+
+### Model of Models
+The framework employs a dynamic "Model of Models" architecture that re-trains each constituent model biannually, using data from the preceding six months. The model yielding the best Over-Under Error (OUE) score is selected as the lead model for the subsequent period. This chosen model identifies the most promising sector for investment based on the mean of its predicted returns. Stocks from the chosen sector are identified via their GICS segmentation. The resulting table is as such:
+
+<p align="center">
+    <img src="img/model_sector_results.png" alt="Results" width="50%" height="50%">
+</p>
+
+Following this, stock allocations are optimized based on mean-variance optimization methods, specifically the Maximum Sharpe Ratio, Risk Parity, and Minimum Variance optimizations. This cyclical recalibration ensures that the models and subsequently the investor's historical portfolio are updated with prevailing market conditions, optimizing both sector selection (via machine learning) and intra-sector asset allocation (via mean variance optimization).
