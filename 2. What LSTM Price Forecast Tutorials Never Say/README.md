@@ -2,12 +2,9 @@
 ### 
 
 Aung Si<br>
-September 7<sup>th</sup>, 2023
-
+September 7<sup>th</sup>, 2023<br>
+<sub>STATUS: <i>COMPLETE</i></sub>
 ---
-```diff
-+ complete
-```
 
 ## Contents
 - [Introduction](#introduction)
