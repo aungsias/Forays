@@ -1,5 +1,10 @@
 # Long Short-Term Memory for Portfolio Optimization
 
+Aung Si<br>
+June 1<sup>st</sup>, 2023
+
+PROJECT STATUS: <i><b>COMPLETE</b></i>
+
 ---
 
 ## Contents
