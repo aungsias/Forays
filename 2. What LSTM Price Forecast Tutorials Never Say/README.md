@@ -2,8 +2,10 @@
 ### 
 
 Aung Si<br>
-September 7<sup>th</sup>, 2023<br>
-<sub>STATUS: <i>COMPLETE</i></sub>
+September 7<sup>th</sup>, 2023
+
+<i>PROJECT STATUS: COMPLETE</i>
+
 ---
 
 ## Contents

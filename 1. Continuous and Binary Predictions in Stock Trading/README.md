@@ -2,8 +2,10 @@
 ### Continuous and Binary Predictions in Stock Trading
 
 Aung Si<br>
-August 30<sup>th</sup>, 2023<br>
-<sub>STATUS: <i>COMPLETE</i></sub>
+August 30<sup>th</sup>, 2023
+
+<i>PROJECT STATUS: COMPLETE</i>
+
 ---
 
 ## Contents
