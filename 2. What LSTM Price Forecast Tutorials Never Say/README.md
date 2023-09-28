@@ -4,7 +4,7 @@
 Aung Si<br>
 September 7<sup>th</sup>, 2023
 
-<i>PROJECT STATUS: COMPLETE</i>
+<i>PROJECT STATUS: <b>COMPLETE</b></i>
 
 ---
 
